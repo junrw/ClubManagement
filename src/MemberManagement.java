@@ -8,6 +8,7 @@ public class MemberManagement extends JPanel{
 	JLabel details;
 	JPanel center;
 	JButton back;
+	JTable table=new JTable();
 	GridBagConstraints constraints;
 	private static final MemberManagement singleton=new MemberManagement();
 	public static MemberManagement getSingleton(){
