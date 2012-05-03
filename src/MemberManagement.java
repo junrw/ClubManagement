@@ -5,18 +5,29 @@ import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class MemberManagement extends JPanel{
 	
 	JLabel details;
 	JPanel center,smo,addrm,modify;
+	
 	JLabel FirstLabel,LastLabel,yearLabel,joinLabel,positionLabel,filterLabel;
-	JTextField FirstText,LastText,yearText,joinText,positionText,filterText;
+	JTextField FirstText,LastText,yearText,joinText,positionText;
+	TextField filterText;
 	JButton backButton,displaylist,backButton2,backButton3,addrmButton,filterButton,commitButton;
-	
-	JTable table;
+	JPanel smo_below;
+	JTable table,resultTable;
 	JScrollPane tablepane;
+	String filter=new String();
+		
+	DefaultTableModel tableModel;
 	
+	AbstractTableModel change;
 	GridBagConstraints constraints;
 	
 	private static final MemberManagement singleton=new MemberManagement();
@@ -75,10 +86,66 @@ public class MemberManagement extends JPanel{
 		smo.setLayout(new BorderLayout());
 		smo.add(tablepane,BorderLayout.NORTH);
 		
-		JPanel smo_below=new JPanel();
+		smo_below=new JPanel();
 		
 		smo_below.add(filterButton=new JButton("Filter Name: "));
-		smo_below.add(filterText=new JTextField(20));
+		smo_below.add(filterText=new TextField(20));
+		
+		
+		tableModel = (DefaultTableModel)table.getModel();
+	   
+		filterText.addTextListener(new TextListener(){
+			public void textValueChanged(TextEvent te){
+				filter=filterText.getText();
+				((AbstractTableModel)tableModel).fireTableDataChanged();
+				
+			}
+		});
+		
+		tableModel.addTableModelListener(new TableModelListener(){
+			
+			public void tableChanged(TableModelEvent a){
+				
+					int i=0;
+					DefaultTableModel model=new DefaultTableModel();
+					Object [][] display1=new Object[10][10];
+					String[] colHeads={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
+					ResultSet testResult;
+					Konnection test= Konnection.getSingleton();
+					String testQuery="Select * from members where FirstName like '"+filter+"%';";
+					testResult=test.query(testQuery);
+					try{
+					
+						while(testResult.next()){
+				
+							display1[i][0]=testResult.getString("ID");
+							display1[i][1]=testResult.getString("FirstName");
+							display1[i][2]=testResult.getString("LastName");
+							display1[i][3]=testResult.getString("JoinDate");
+							display1[i][4]=testResult.getString("Position");
+							display1[i][5]=testResult.getString("Address");
+							
+							System.out.println(display1[i][0]+" "+display1[i][1]+" "+display1[i][2]+" "+display1[i][3]+" ");
+							try{
+							((DefaultTableModel) tableModel).addRow(display1[i]);
+							}catch(Exception e){
+								System.out.println(e);
+							}
+							table=new JTable(display1,colHeads);
+							table.setModel(new DefaultTableModel(display1,colHeads));
+							
+							i++;
+						}
+					}
+					catch(SQLException e){
+						e.printStackTrace();
+					}
+					
+					
+					
+				}
+		
+		});
 		
 		smo.add(smo_below,BorderLayout.CENTER);
 		
