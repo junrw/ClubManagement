@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 public class mainPage extends JPanel{
 	
-	JPanel left,center,right,mainabove,mainbelow;
+	JPanel left,center,right,mainbelow;
 	JButton notifyButton,memberButton,calendarButton,logoutButton;
 	GridBagLayout mainLayout,centerLayout,leftLayout,rightLayout;
 	GridBagConstraints constraints;
@@ -43,13 +43,8 @@ public class mainPage extends JPanel{
 		mainbelow.add(right,constraints);
 		
 		add(mainbelow,BorderLayout.CENTER);
+		add(logoutButton=new JButton("Logout"),BorderLayout.SOUTH);
 		
-		mainabove=new JPanel();
-		mainabove.setLayout(mainLayout);
-		constraints.ipady=30;
-		constraints.ipadx=40;
-		mainabove.add(logoutButton=new JButton("Logout"),constraints);
-		add(mainabove,BorderLayout.SOUTH);
 		memberButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"membermanagement");
