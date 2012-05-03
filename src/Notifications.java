@@ -2,6 +2,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class Notifications extends JPanel {
 	JLabel details;
@@ -35,8 +36,14 @@ public class Notifications extends JPanel {
 		});
 	}
 	
-	void sendPublicNotification(){
-			
+	void sendPublicNotification(Note publicNote){
+		String updateStatement;
+		try{
+			updateStatement="insert into notifications values(default,'"+publicNote;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 	
 }
