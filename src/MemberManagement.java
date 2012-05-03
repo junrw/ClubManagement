@@ -14,18 +14,20 @@ import javax.swing.table.TableModel;
 public class MemberManagement extends JPanel{
 	
 	JLabel details;
-	JPanel center,smo,addrm,modify;
+	JPanel center,smo,addrm,modify,tableresult;
 	
 	JLabel FirstLabel,LastLabel,yearLabel,joinLabel,positionLabel,filterLabel;
 	JTextField FirstText,LastText,yearText,joinText,positionText;
 	TextField filterText;
 	JButton backButton,displaylist,backButton2,backButton3,addrmButton,filterButton,commitButton;
+	JButton backButton4;
 	JPanel smo_below;
-	JTable table,resultTable;
-	JScrollPane tablepane;
+	JPanel addrm_above;
+	JTable table;
+	JScrollPane tablepane,resultpane;
 	String filter=new String();
 		
-	DefaultTableModel tableModel;
+	TableModel tableModel;
 	
 	AbstractTableModel change;
 	GridBagConstraints constraints;
@@ -92,7 +94,7 @@ public class MemberManagement extends JPanel{
 		smo_below.add(filterText=new TextField(20));
 		
 		
-		tableModel = (DefaultTableModel)table.getModel();
+		tableModel =table.getModel();
 	   
 		filterText.addTextListener(new TextListener(){
 			public void textValueChanged(TextEvent te){
@@ -102,12 +104,16 @@ public class MemberManagement extends JPanel{
 			}
 		});
 		
+		
 		tableModel.addTableModelListener(new TableModelListener(){
 			
 			public void tableChanged(TableModelEvent a){
 				
 					int i=0;
-					DefaultTableModel model=new DefaultTableModel();
+					JTable result;
+					
+					//DefaultTableModel model=new DefaultTableModel();
+					
 					Object [][] display1=new Object[10][10];
 					String[] colHeads={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
 					ResultSet testResult;
@@ -126,13 +132,8 @@ public class MemberManagement extends JPanel{
 							display1[i][5]=testResult.getString("Address");
 							
 							System.out.println(display1[i][0]+" "+display1[i][1]+" "+display1[i][2]+" "+display1[i][3]+" ");
-							try{
-							((DefaultTableModel) tableModel).addRow(display1[i]);
-							}catch(Exception e){
-								System.out.println(e);
-							}
-							table=new JTable(display1,colHeads);
-							table.setModel(new DefaultTableModel(display1,colHeads));
+						
+							//smo_below.add(new JLabel(display1[i][0]+" "+display1[i][1]+" "+display1[i][2]+" "+display1[i][3]+" "),BorderLayout.CENTER);	
 							
 							i++;
 						}
@@ -163,7 +164,7 @@ public class MemberManagement extends JPanel{
 		
 		addrm=new JPanel();
 		addrm.setLayout(new BorderLayout());
-		JPanel addrm_above=new JPanel();
+		addrm_above=new JPanel();
 		
 		addrm_above.setLayout(new GridBagLayout());
 		constraints.gridx=0;
@@ -211,7 +212,20 @@ public class MemberManagement extends JPanel{
 	    
 	    commitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-								MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"tablepane");
+								if(FirstText.getText().isEmpty()||LastText.getText().isEmpty()||yearText.getText().isEmpty()||positionText.getText().isEmpty()||joinText.getText().isEmpty()){
+									constraints.gridx=0;
+									constraints.gridy=6;
+									
+									constraints.gridheight=2;
+									constraints.gridwidth=2;
+									
+									addrm_above.add(new JLabel("Invalid Entries"),constraints);
+								}
+								else{
+									
+									
+									
+								}
 			}
 		});
 			
@@ -223,7 +237,10 @@ public class MemberManagement extends JPanel{
 			
 		backButton2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+				table.setVisible(true);
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+			
+			
 			}
 			
 		});
