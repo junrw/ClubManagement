@@ -9,7 +9,8 @@ import java.sql.SQLException;
 public class MemberManagement extends JPanel{
 	JLabel details;
 	JPanel center,smo,addrm,modify;
-	JTextBox FirstText,LastText,yearText;
+	JLabel FirstLabel,LastLabel,yearLabel,joinLabel;
+	JTextField FirstText,LastText,yearText,joinText;
 	JButton backButton,displaylist,backButton2,addrmButton,filterButton;
 	
 	JTable table;
