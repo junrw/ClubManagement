@@ -216,6 +216,9 @@ public class MemberManagement extends JPanel{
 									constraints.gridx=0;
 									constraints.gridy=6;
 									
+									constraints.gridheight=2;
+									constraints.gridwidth=2;
+									
 									addrm_above.add(new JLabel("Invalid Entries"),constraints);
 								}
 								else{
