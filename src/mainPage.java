@@ -61,6 +61,9 @@ public class mainPage extends JPanel{
 	}
 	
 	public void displayMemberInfo(){
+		if(maincenter!=null){
+			remove(maincenter);
+		}
 		maincenter=new JPanel();
 		maincenter.setLayout(new GridLayout(3,1));
 		
