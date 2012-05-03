@@ -115,7 +115,7 @@ public class MemberManagement extends JPanel{
 					//DefaultTableModel model=new DefaultTableModel();
 					
 					Object [][] display1=new Object[10][10];
-					String[] colHeads={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
+					String[] colHeads1={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
 					ResultSet testResult;
 					Konnection test= Konnection.getSingleton();
 					String testQuery="Select * from members where FirstName like '"+filter+"%';";
@@ -137,6 +137,12 @@ public class MemberManagement extends JPanel{
 							
 							i++;
 						}
+						
+						smo.remove(tablepane);
+						table=new JTable(display1,colHeads1);
+						tablepane=new JScrollPane(table,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+						smo.add(tablepane,BorderLayout.NORTH);
+						smo.validate();
 					}
 					catch(SQLException e){
 						e.printStackTrace();
