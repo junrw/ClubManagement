@@ -34,4 +34,9 @@ public class Notifications extends JPanel {
 			}
 		});
 	}
+	
+	void sendPublicNotification(){
+			
+	}
+	
 }
