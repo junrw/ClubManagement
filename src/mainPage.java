@@ -7,8 +7,8 @@ import java.awt.event.*;
 
 public class mainPage extends JPanel{
 	
-	JPanel left,center,right;
-	JButton notifyButton,memberButton,calendarButton;
+	JPanel left,center,right,mainabove,mainbelow;
+	JButton notifyButton,memberButton,calendarButton,logoutButton;
 	GridBagLayout mainLayout,centerLayout,leftLayout,rightLayout;
 	GridBagConstraints constraints;
 	private static final mainPage singleton= new mainPage();  
@@ -21,7 +21,11 @@ public class mainPage extends JPanel{
 		constraints=new GridBagConstraints();
 		constraints.gridheight=2;
 		
-		setLayout(mainLayout);
+		mainbelow=new JPanel();
+		mainbelow.setLayout(mainLayout);
+		
+		//setting layout
+		setLayout(new BorderLayout());
 		
 		center=new JPanel();
 		center.setLayout(centerLayout=new GridBagLayout());
@@ -34,10 +38,18 @@ public class mainPage extends JPanel{
 		right.add(memberButton=new JButton("Member Management"));
 		left.add(calendarButton=new JButton("Calendar"));
 		
-		add(left,constraints);
-		add(center,constraints);
-		add(right,constraints);
+		mainbelow.add(left,constraints);
+		mainbelow.add(center,constraints);
+		mainbelow.add(right,constraints);
 		
+		add(mainbelow,BorderLayout.CENTER);
+		
+		mainabove=new JPanel();
+		mainabove.setLayout(mainLayout);
+		constraints.ipady=30;
+		constraints.ipadx=40;
+		mainabove.add(logoutButton=new JButton("Logout"),constraints);
+		add(mainabove,BorderLayout.SOUTH);
 		memberButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"membermanagement");
@@ -51,6 +63,12 @@ public class mainPage extends JPanel{
 		calendarButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"calendar");
+			}
+		});
+		
+		logoutButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"login");
 			}
 		});
 	}

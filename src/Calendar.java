@@ -6,6 +6,8 @@ import java.awt.event.*;
 public class Calendar extends JPanel{
 	JLabel details;
 	JButton back;
+	JPanel center=new JPanel();
+	GridBagLayout constraints=new GridBagLayout();
 	
 	private static final Calendar singleton=new Calendar();
 	public static Calendar getSingleton(){
@@ -14,7 +16,10 @@ public class Calendar extends JPanel{
 	}
 	Calendar(){
 		
-		details=new JLabel("The Calendar!");
+		setLayout(new BorderLayout());
+		
+		center.setLayout(new GridBagLayout());
+		center.add(details=new JLabel("The Calendar!"),constraints);
 		add(details);
 		back=new JButton("Back to mainpage");
 		add(back);

@@ -6,9 +6,9 @@ import java.awt.event.*;
 
 public class MemberManagement extends JPanel{
 	JLabel details;
-	
+	JPanel center;
 	JButton back;
-	
+	GridBagConstraints constraints;
 	private static final MemberManagement singleton=new MemberManagement();
 	public static MemberManagement getSingleton(){
 		return singleton;
@@ -16,26 +16,25 @@ public class MemberManagement extends JPanel{
 	}
 	MemberManagement(){
 		
-		setLayout(new GridBagLayout());
-		GridBagConstraints constraints=new GridBagConstraints();
+		setLayout(new BorderLayout());
+		constraints=new GridBagConstraints();
+		
 		
 		
 		back=new JButton("Back to mainpage");
-		add(back,constraints);
-	
+		add(back,BorderLayout.NORTH);
 		back.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 			}
 		});
 		
-		constraints.anchor=GridBagConstraints.PAGE_END;
-		constraints.weighty=0.3;
+		center=new JPanel();
+		center.setLayout(new GridBagLayout());
+		
 		details=new JLabel("Hello member !");
-		add(details,constraints);
-		
-		
-		
+		center.add(details,constraints);
+		add(center,BorderLayout.CENTER);
 		
 		
 	}
