@@ -12,7 +12,7 @@ public class MemberManagement extends JPanel{
 	JPanel center,smo,addrm,modify;
 	JLabel FirstLabel,LastLabel,yearLabel,joinLabel,positionLabel,filterLabel;
 	JTextField FirstText,LastText,yearText,joinText,positionText,filterText;
-	JButton backButton,displaylist,backButton2,addrmButton,filterButton;
+	JButton backButton,displaylist,backButton2,backButton3,addrmButton,filterButton,commitButton;
 	
 	JTable table;
 	JScrollPane tablepane;
@@ -95,50 +95,73 @@ public class MemberManagement extends JPanel{
 	    add(center,BorderLayout.CENTER);
 		
 		addrm=new JPanel();
-	
-		addrm.setLayout(new GridBagLayout());
+		addrm.setLayout(new BorderLayout());
+		JPanel addrm_above=new JPanel();
+		
+		addrm_above.setLayout(new GridBagLayout());
 		constraints.gridx=0;
 		constraints.gridy=0;
-		addrm.add(FirstLabel=new JLabel("First Name:"),constraints);
+		addrm_above.add(FirstLabel=new JLabel("First Name:"),constraints);
 		constraints.gridx=1;
 		constraints.gridy=0;
-		addrm.add(FirstText=new JTextField(20),constraints);
+		addrm_above.add(FirstText=new JTextField(20),constraints);
 		constraints.gridx=0;
 		constraints.gridy=1;
-	    addrm.add(LastLabel=new JLabel("Last Name:"),constraints);
+	    addrm_above.add(LastLabel=new JLabel("Last Name:"),constraints);
 	    constraints.gridx=1;
 		constraints.gridy=1;
-	    addrm.add(LastText=new JTextField(20),constraints);
+	    addrm_above.add(LastText=new JTextField(20),constraints);
 	    constraints.gridx=0;
 		constraints.gridy=2;
-	    addrm.add(yearLabel=new JLabel("Year:"),constraints);
+	    addrm_above.add(yearLabel=new JLabel("Year:"),constraints);
 	    constraints.gridx=1;
 		constraints.gridy=2;
-	    addrm.add(yearText=new JTextField(20),constraints);
+	    addrm_above.add(yearText=new JTextField(20),constraints);
 	    constraints.gridx=0;
 		constraints.gridy=3;
-	    addrm.add(joinLabel=new JLabel("Join date:"),constraints);
+	    addrm_above.add(joinLabel=new JLabel("Join date:"),constraints);
 	    constraints.gridx=1;
 		constraints.gridy=3;
-	    addrm.add(joinText=new JTextField(20),constraints);
+	    addrm_above.add(joinText=new JTextField(20),constraints);
 	    constraints.gridx=0;
 		constraints.gridy=4;
-	    addrm.add(positionLabel=new JLabel("Position:"),constraints);
+	    addrm_above.add(positionLabel=new JLabel("Position:"),constraints);
 	    constraints.gridx=1;
 		constraints.gridy=4;
-	    addrm.add(positionText=new JTextField(20),constraints);
+	    addrm_above.add(positionText=new JTextField(20),constraints);
+	    constraints.gridx=0;
+	    constraints.gridy=5;
 	    
+	    constraints.gridheight=2;
+	    constraints.gridwidth=2;
+	    addrm_above.add(commitButton=new JButton("commit to database"),constraints);
+	    addrm.add(backButton3=new JButton("Back"),BorderLayout.SOUTH);
+	    addrm.add(addrm_above,BorderLayout.CENTER);
 	    
 	    
 	    MainFrame.getSingleton().mainPanel.add(addrm,"add");
 	    
+	    
+	    commitButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+								MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"tablepane");
+			}
+		});
+			
 	    displaylist.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"tablepane");
 			}
 		});
-		
+			
 		backButton2.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+			}
+			
+		});
+
+		backButton3.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 			}
