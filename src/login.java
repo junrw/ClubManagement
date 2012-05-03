@@ -2,6 +2,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.*;
 
 public class login extends JPanel{
 	
@@ -72,12 +73,25 @@ login(){
 		
 		submit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				//String pass=password.getText();
-				//id=username.getText();
+				String pass=String.valueOf(password.getPassword());
+				id=username.getText();
+				String loginQuery="Select * from members where ID='"+id+"';";
+				ResultSet memberDetails;
 				
+				memberDetails=Konnection.getSingleton().query(loginQuery);
+				try{
+					memberDetails.next();
+					if(pass.equals(memberDetails.getString("Password"))){
+						MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+					}
+					else {
+						incorrect_input.setVisible(true);
+					}
+				}
+				catch(SQLException e){
+					e.printStackTrace();
+				}
 				
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
-					//incorrect_input.setVisible(true);
 				
 			}
 		});
