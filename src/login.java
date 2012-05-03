@@ -7,16 +7,19 @@ import java.sql.*;
 public class login extends JPanel{
 	
 	//JFrame frame;
+	public static Member currentMember=new Member();
 	JPanel above,center;
 	JLabel incorrect_input;
 	JTextField username;
 	JPasswordField password;
 	JButton submit,reset;
 	String id;
+	
 	private final static login singleton=new login();
 	public static login getSingleton(){
 		return singleton;
 	}
+	
 login(){
 		
 		setLayout(new BorderLayout());
@@ -82,6 +85,15 @@ login(){
 				try{
 					memberDetails.next();
 					if(pass.equals(memberDetails.getString("Password"))){
+						currentMember.FirstName=memberDetails.getString("FirstName");
+						currentMember.LastName=memberDetails.getString("LastName");
+						currentMember.Address=memberDetails.getString("Address");
+						currentMember.Position=memberDetails.getString("Position");
+						currentMember.Authority=memberDetails.getString("Authority");
+						currentMember.JoinDate=memberDetails.getString("JoinDate");
+						mainPage.getSingleton().displayMemberInfo();
+						
+						currentMember.ConsoleOutput();
 						MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 					}
 					else {
