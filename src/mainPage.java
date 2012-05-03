@@ -7,9 +7,10 @@ import java.awt.event.*;
 
 public class mainPage extends JPanel{
 	
-	JPanel left,center,right,mainbelow;
+	JPanel mainabove;
 	JButton notifyButton,memberButton,calendarButton,logoutButton;
-	GridBagLayout mainLayout,centerLayout,leftLayout,rightLayout;
+	GridBagLayout centerLayout,leftLayout,rightLayout;
+	GridLayout mainLayout;
 	GridBagConstraints constraints;
 	private static final mainPage singleton= new mainPage();  
 	public static mainPage getSingleton(){
@@ -17,32 +18,21 @@ public class mainPage extends JPanel{
 	}
 	mainPage(){
 		
-		mainLayout=new GridBagLayout();
+		mainLayout=new GridLayout();
 		constraints=new GridBagConstraints();
-		constraints.gridheight=2;
 		
-		mainbelow=new JPanel();
-		mainbelow.setLayout(mainLayout);
+		
+		mainabove=new JPanel();
+		mainabove.setLayout(mainLayout);
 		
 		//setting layout
 		setLayout(new BorderLayout());
 		
-		center=new JPanel();
-		center.setLayout(centerLayout=new GridBagLayout());
-		left=new JPanel();
-		left.setLayout(leftLayout=new GridBagLayout());
-		right=new JPanel();
-		right.setLayout(rightLayout=new GridBagLayout());
+		mainabove.add(notifyButton=new JButton("Notifications"));
+		mainabove.add(memberButton=new JButton("Member Management"));
+		mainabove.add(calendarButton=new JButton("     Calendar     "));
 		
-		center.add(notifyButton=new JButton("Notifications"));
-		right.add(memberButton=new JButton("Member Management"));
-		left.add(calendarButton=new JButton("Calendar"));
-		
-		mainbelow.add(left,constraints);
-		mainbelow.add(center,constraints);
-		mainbelow.add(right,constraints);
-		
-		add(mainbelow,BorderLayout.CENTER);
+		add(mainabove,BorderLayout.NORTH);
 		add(logoutButton=new JButton("Logout"),BorderLayout.SOUTH);
 		
 		memberButton.addActionListener(new ActionListener(){
