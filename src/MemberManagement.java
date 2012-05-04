@@ -20,7 +20,8 @@ public class MemberManagement extends JPanel{
 	JTextField FirstText,LastText,yearText,joinText,positionText,addressText;
 	TextField filterText,filter2Text;
 	JButton backButton,displaylist,backButton2,backButton3,backButton5,addrmButton,filterButton,commitButton;
-	JButton backButton4;
+	JButton backButton4,deleteMember;
+	JLabel delMessage,baddelMessage;
 	JPanel smo_below;
 	JPanel addrm_above,modifyPanel,modifyAbove,modifyBelow;
 	JTable table;
@@ -171,10 +172,41 @@ public class MemberManagement extends JPanel{
 	    modifyPanel=new JPanel();
 	    modifyPanel.setLayout(new BorderLayout());
 	    MainFrame.getSingleton().mainPanel.add(modifyPanel,"delete");
+	    GridBagConstraints constraints2=new GridBagConstraints();
 	    modifyPanel.add(backButton5=new JButton("Back"),BorderLayout.SOUTH);
 		modifyAbove=new JPanel();
+		modifyAbove.setLayout(new GridBagLayout());
+		constraints2.gridy=0;
+		modifyAbove.add(filter2Label=new JLabel("Enter ID: "),constraints2);
+		modifyAbove.add(filter2Text=new TextField(20),constraints2);
+		constraints2.gridy=1;
+		constraints2.gridwidth=2;
+		modifyAbove.add(deleteMember=new JButton("Delete Member"),constraints2);
+		constraints2.gridy=2;
+		modifyAbove.add(delMessage=new JLabel("Delete Successful !"),constraints2);
+		delMessage.setVisible(false);
+		constraints2.gridy=3;
+		modifyAbove.add(baddelMessage=new JLabel("Delete Unsuccessful !"),constraints2);
+		baddelMessage.setVisible(false);
+		modifyPanel.add(modifyAbove,BorderLayout.CENTER);
 		
-		
+		deleteMember.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				String val=new String();
+				Konnection test= Konnection.getSingleton();
+				int r1=test.update("Delete from members where ID='"+filter2Text.getText()+"';");
+				if(r1>0){
+					baddelMessage.setVisible(false);
+					delMessage.setVisible(true);
+					((AbstractTableModel)tableModel).fireTableDataChanged();
+				}else{
+					delMessage.setVisible(false);
+					baddelMessage.setVisible(true);
+				}
+				modifyAbove.validate();
+				
+			}
+		});
 		
 		
 		addrm=new JPanel();
@@ -303,7 +335,7 @@ public class MemberManagement extends JPanel{
 		backButton2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				table.setVisible(true);
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"membermanagement");
 			
 			
 			}
@@ -312,7 +344,7 @@ public class MemberManagement extends JPanel{
 		backButton5.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				table.setVisible(true);
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"membermanagement");
 			
 			
 			}
@@ -321,7 +353,7 @@ public class MemberManagement extends JPanel{
 	
 		backButton3.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"membermanagement");
 			}
 			
 		});
