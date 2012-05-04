@@ -72,7 +72,7 @@ public class mainPage extends JPanel{
 		notifyButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				Notifications.getSingleton().refreshNotifications();
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"ERROR");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
 			}
 		});
 		calendarButton.addActionListener(new ActionListener(){
