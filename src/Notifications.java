@@ -6,10 +6,14 @@ import java.sql.*;
 
 public class Notifications extends JPanel {
 	JLabel details;
-	JButton back;
+	JLabel from, fromPerson,to, content;
+	JButton back,back2,submitPublic;
 	JButton newPublicNote,newPrivateNote;
+	JPanel publicNotePanel,privateNotePanel;
 	JPanel center,centerTop,centerMiddle,centerBottom,bottom;
 	JScrollPane allNotificationsScroll;
+	JTextField toPerson;
+	JTextArea contentText;
 	GridBagConstraints constraints=new GridBagConstraints();
 	JPanel allNotifications,notificationArea;
 	private static final Notifications singleton=new Notifications();
@@ -54,11 +58,34 @@ public class Notifications extends JPanel {
 		add(center,BorderLayout.WEST);
 		back=new JButton("Back to mainpage");
 		add(back,BorderLayout.NORTH);
+		
+
+		publicNotePanel=new JPanel();
+		publicNotePanel.setLayout(new BorderLayout());
+		back2=new JButton("Back");
+		publicNotePanel.add(back2,BorderLayout.SOUTH);
+		
+		
+		
 		back.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 			}
 		});
+		
+		back2.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
+			}
+		});
+		
+		newPublicNote.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().mainPanel.add(publicNotePanel,"publicNotification");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"publicNotification");
+			}
+		});
+		
 	}
 	
 	public void refreshNotifications(){
@@ -71,6 +98,9 @@ public class Notifications extends JPanel {
 			add(notificationArea,BorderLayout.CENTER);
 			
 		}
+		
+		
+		
 		allNotifications=new JPanel();
 		allNotifications.setLayout(new GridLayout(0,1));
 		String currentNotificationsQuery;
@@ -86,7 +116,7 @@ public class Notifications extends JPanel {
 				String message=currentNotificationResult.getString("Content");
 				String timeAt=currentNotificationResult.getString("Time");
 				tempNote.add(new JLabel("From: " + memberFrom));
-				tempNote.add(new JLabel("Time: " + timeAt));
+				//tempNote.add(new JLabel("Time: " + timeAt));
 				tempNote.add(new JLabel("Message: "+ message));
 				tempNote.setBorder(BorderFactory.createTitledBorder(timeAt));
 				//tempNote.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -103,6 +133,45 @@ public class Notifications extends JPanel {
 			e.printStackTrace();
 		}
 	}
+	
+	public void makePublicNoteGUI(){
+		JPanel addPanel=new JPanel();
+		addPanel.setLayout(new GridBagLayout());
+		GridBagConstraints addConstraints=new GridBagConstraints();
+		addConstraints.gridx=0;
+		addConstraints.gridy=0;
+		addPanel.add(from=new JLabel("From:"),addConstraints);
+		addConstraints.gridx=1;
+		addConstraints.gridy=0;
+		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=1;
+		addPanel.add(to=new JLabel("To ID:"),addConstraints);
+		addConstraints.gridx=1;
+		addConstraints.gridy=1;
+		addPanel.add(new JLabel("All Members"),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=2;
+		addPanel.add(content=new JLabel("Content:"),addConstraints);
+		addConstraints.gridx=1;
+		addConstraints.gridy=2;
+		addPanel.add(contentText=new JTextArea(4,20),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=3;
+		addConstraints.gridwidth=2;
+		addPanel.add(submitPublic=new JButton("Send"),addConstraints);
+		
+		publicNotePanel.add(addPanel,BorderLayout.CENTER);
+		submitPublic.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				String notificationsQuery;
+				notificationsQuery="insert into notifications values(null,null,'"+login.currentMember.MemberId+"','"+contentText.getText()+"');";
+				String membernotificationQuery;
+				membernotificationQuery="insert into notifications values(";
+			}
+		});
+	}
+	
 	
 	public void sendPublicNotification(Note publicNote){
 		String updateNotifications;
