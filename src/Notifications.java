@@ -42,10 +42,12 @@ public class Notifications extends JPanel {
 		
 		centerLeftConstraints.gridx=0;
 		centerLeftConstraints.gridy=0;
+		centerLeftConstraints.gridheight=2;
 		centerLeftTop.add(new JLabel(new ImageIcon("Mail-icon.png")),centerLeftConstraints);
 		
 		centerLeftConstraints.gridx=0;
-		centerLeftConstraints.gridy=1;
+		centerLeftConstraints.gridy=2;
+		
 		centerLeftTop.add(details=new JLabel("Recent Notifications !"),centerLeftConstraints);
 		
 		centerLeft.add(centerLeftTop,constraints);
@@ -53,12 +55,12 @@ public class Notifications extends JPanel {
 		notificationArea=new JPanel();
 		add(notificationArea,BorderLayout.CENTER);
 		bottom=new JPanel();
-		bottom.setLayout(new GridLayout(1,0));
+		bottom.setLayout(new GridLayout(2,0));
 		newPublicNote=new JButton("Notification to all");
 		newPrivateNote=new JButton("Notification to specific member");
 		bottom.add(newPublicNote);
 		bottom.add(newPrivateNote);
-		add(bottom,BorderLayout.SOUTH);
+		add(bottom,BorderLayout.WEST);
 		
 		//centerMiddle=new JPanel();
 		
@@ -67,7 +69,7 @@ public class Notifications extends JPanel {
 		//refreshNotifications();
 		
 		//center.add(centerMiddle,constraints);
-		add(centerLeft,BorderLayout.WEST);
+		add(centerLeft,BorderLayout.EAST);
 		back=new JButton("Back to mainpage");
 		add(back,BorderLayout.NORTH);
 		
