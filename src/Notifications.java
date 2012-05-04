@@ -183,6 +183,7 @@ public class Notifications extends JPanel {
 				catch(SQLException e){
 					e.printStackTrace();
 				}
+				refreshNotifications();
 			}
 		});
 	}
