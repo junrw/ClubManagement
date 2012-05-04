@@ -7,14 +7,14 @@ import java.sql.*;
 public class Notifications extends JPanel {
 	JLabel details;
 	JLabel from, fromPerson,to, content;
-	JButton back,back2;
+	JButton back;
 	
 	JButton submitPrivate, submitPublic;
 	JButton newPublicNote,newPrivateNote;
 	JPanel publicNotePanel,privateNotePanel;
 	JPanel center,centerTop,centerMiddle,centerBottom,bottom;
 	JScrollPane allNotificationsScroll;
-	JTextField toPerson;
+	
 	JTextArea contentText;
 	JComboBox toPersonChoice;
 	GridBagConstraints constraints=new GridBagConstraints();
@@ -62,17 +62,6 @@ public class Notifications extends JPanel {
 		back=new JButton("Back to mainpage");
 		add(back,BorderLayout.NORTH);
 		
-
-		publicNotePanel=new JPanel();
-		publicNotePanel.setLayout(new BorderLayout());
-		back2=new JButton("Back");
-		publicNotePanel.add(back2,BorderLayout.SOUTH);
-		
-		
-		privateNotePanel=new JPanel();
-		privateNotePanel.setLayout(new BorderLayout());
-		privateNotePanel.add(back2,BorderLayout.SOUTH);
-		
 		
 		back.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
@@ -80,11 +69,7 @@ public class Notifications extends JPanel {
 			}
 		});
 		
-		back2.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
-			}
-		});
+		
 		
 		newPublicNote.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
@@ -96,6 +81,7 @@ public class Notifications extends JPanel {
 		newPrivateNote.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().mainPanel.add(privateNotePanel,"privateNotification");
+				updatePrivateNotificationMemberList();
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel, "privateNotification");
 			}
 		});
@@ -149,6 +135,9 @@ public class Notifications extends JPanel {
 	}
 	
 	public void makePublicNoteGUI(){
+		publicNotePanel=new JPanel();
+		publicNotePanel.setLayout(new BorderLayout());
+		
 		JPanel addPanel=new JPanel();
 		addPanel.setLayout(new GridBagLayout());
 		GridBagConstraints addConstraints=new GridBagConstraints();
@@ -160,7 +149,7 @@ public class Notifications extends JPanel {
 		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=1;
-		addPanel.add(to=new JLabel("To ID:"),addConstraints);
+		addPanel.add(to=new JLabel("To:  "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=1;
 		addPanel.add(new JLabel("All Members"),addConstraints);
@@ -174,8 +163,16 @@ public class Notifications extends JPanel {
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
 		addPanel.add(submitPublic=new JButton("Send"),addConstraints);
+		addPanel.validate();
 		
 		publicNotePanel.add(addPanel,BorderLayout.CENTER);
+		
+		
+		JButton back2=new JButton("Back");
+		publicNotePanel.add(back2,BorderLayout.SOUTH);
+		
+		publicNotePanel.validate();
+		
 		submitPublic.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				Note publicNote=new Note();
@@ -184,9 +181,18 @@ public class Notifications extends JPanel {
 				sendPublicNotification(publicNote);
 			}
 		});
+		
+		back2.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
+			}
+		});
 	}
 	
 	public void makePrivateNoteGUI(){
+		privateNotePanel=new JPanel();
+		privateNotePanel.setLayout(new BorderLayout());
+		
 		JPanel addPanel=new JPanel();
 		addPanel.setLayout(new GridBagLayout());
 		GridBagConstraints addConstraints=new GridBagConstraints();
@@ -198,10 +204,10 @@ public class Notifications extends JPanel {
 		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=1;
-		addPanel.add(toPersonChoice=new JComboBox(),addConstraints);
+		addPanel.add(to=new JLabel("To:  "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=1;
-		addPanel.add(new JLabel("All Members"),addConstraints);
+		addPanel.add(toPersonChoice=new JComboBox(),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=2;
 		addPanel.add(content=new JLabel("Content:"),addConstraints);
@@ -211,9 +217,16 @@ public class Notifications extends JPanel {
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
-		addPanel.add(submitPublic=new JButton("Send"),addConstraints);
+		addPanel.add(submitPrivate=new JButton("Send"),addConstraints);
+		addPanel.validate();
 		
 		privateNotePanel.add(addPanel,BorderLayout.CENTER);
+		
+		JButton back2=new JButton("Back");
+		privateNotePanel.add(back2,BorderLayout.SOUTH);
+		
+		privateNotePanel.validate();
+		
 		submitPrivate.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				int ids[]=new int[50];
@@ -229,6 +242,12 @@ public class Notifications extends JPanel {
 				}
 				Note privateNote=makePrivateNote(contentText.getText(),ids);
 				sendPrivateNotification(privateNote);
+			}
+		});
+		
+		back2.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
 			}
 		});
 	}
@@ -283,6 +302,24 @@ public class Notifications extends JPanel {
 		privateNote.senderId=login.currentMember.MemberId;
 		privateNote.content=content;
 		return privateNote;
+	}
+	
+	public void updatePrivateNotificationMemberList(){
+		toPersonChoice.removeAllItems();
+		String getMemberNameListQuery;
+		ResultSet getMemberNameList;
+		getMemberNameListQuery="select CONCAT(FirstName, ' ', LastName) as Name from members;";
+		try{
+			getMemberNameList=Konnection.getSingleton().query(getMemberNameListQuery);
+			while(getMemberNameList.next()){
+				String memberName=getMemberNameList.getString("Name");
+				toPersonChoice.addItem(memberName);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

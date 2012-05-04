@@ -97,6 +97,7 @@ login(){
 						currentMember.ConsoleOutput();
 						MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 						Notifications.getSingleton().makePublicNoteGUI();
+						Notifications.getSingleton().makePrivateNoteGUI();
 					}
 					else {
 						incorrect_input.setVisible(true);
