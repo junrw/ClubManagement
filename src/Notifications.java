@@ -56,8 +56,12 @@ public class Notifications extends JPanel {
 		add(notificationArea,BorderLayout.CENTER);
 		bottom=new JPanel();
 		bottom.setLayout(new GridLayout(2,0));
-		newPublicNote=new JButton("Notification to all");
-		newPrivateNote=new JButton("Notification to specific member");
+		newPublicNote=new JButton("Notification to all",new ImageIcon("Y-Birdie-icon.png"));
+		newPublicNote.setHorizontalTextPosition(SwingConstants.CENTER);
+		newPublicNote.setVerticalTextPosition(SwingConstants.BOTTOM);
+		newPrivateNote=new JButton("Notification to specific member",new ImageIcon("Y-Mail-icon.png"));
+		newPrivateNote.setHorizontalTextPosition(SwingConstants.CENTER);
+		newPrivateNote.setVerticalTextPosition(SwingConstants.BOTTOM);
 		bottom.add(newPublicNote);
 		bottom.add(newPrivateNote);
 		add(bottom,BorderLayout.WEST);
