@@ -165,9 +165,18 @@ public class MemberManagement extends JPanel{
 		center=new JPanel();
 		center.setLayout(new GridLayout(0,3));
 		
-		center.add(displaylist=new JButton("display the member list"));
-		center.add(addrmButton=new JButton("Add a Member"));
-		center.add(filterButton=new JButton("Remove a Member"));
+		
+		center.add(displaylist=new JButton("Display the member list",new ImageIcon("Bag-icon.png")));
+		displaylist.setHorizontalTextPosition(SwingConstants.CENTER);
+		displaylist.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+		center.add(addrmButton=new JButton("Add a Member",new ImageIcon("Backup-icon.png")));
+		addrmButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		addrmButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		
+		center.add(filterButton=new JButton("Remove a Member",new ImageIcon("Recycle-Bin-Full-2-icon.png")));
+		filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 	    add(center,BorderLayout.CENTER);
 	    
 	    modifyPanel=new JPanel();
@@ -268,7 +277,7 @@ public class MemberManagement extends JPanel{
 		constraints.gridy=9;
 		
 		
-		ValidMessage=new JLabel("Query Successful !! Remember your to check your member id, its your Username");
+		ValidMessage=new JLabel("Query Successful !! Remember your member id, its your Username");
 		addrm_above.add(ValidMessage,constraints);
 	    addrm.add(addrm_above,BorderLayout.CENTER);
 	    ValidMessage.setVisible(false);

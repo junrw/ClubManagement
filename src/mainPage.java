@@ -30,11 +30,17 @@ public class mainPage extends JPanel{
 		//setting layout
 		setLayout(new BorderLayout());
 		
-		mainabove.add(notifyButton=new JButton("Notifications"));
-		mainabove.add(memberButton=new JButton("Member Management"));
-		mainabove.add(calendarButton=new JButton("     Calendar     "));
+		mainabove.add(notifyButton=new JButton("Notifications",new ImageIcon("MailBox-icon.png")));
+		notifyButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		notifyButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		mainabove.add(memberButton=new JButton("Member Management",new ImageIcon("Folder-icon.png")));
+		memberButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		memberButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		mainabove.add(calendarButton=new JButton("     Calendar     ",new ImageIcon("Doc-icon.png")));
+		calendarButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		calendarButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		
-		add(mainabove,BorderLayout.NORTH);
+		add(mainabove,BorderLayout.CENTER);
 		add(logoutButton=new JButton("Logout"),BorderLayout.SOUTH);
 		
 		memberButton.addActionListener(new ActionListener(){
@@ -66,7 +72,7 @@ public class mainPage extends JPanel{
 			remove(maincenter);
 		}
 		maincenter=new JPanel();
-		maincenter.setLayout(new GridLayout(3,1));
+		maincenter.setLayout(new GridLayout(1,3));
 		
 		maincenterTop=new JPanel();
 		maincenter.add(maincenterTop);
@@ -75,7 +81,7 @@ public class mainPage extends JPanel{
 		maincenterTop.add(new JLabel("<html><h1><font face=nowdance>"+ currentMember.FirstName+" "+currentMember.LastName+"</font></h1></html>"));
 		maincenterTop.add(new JLabel("<html><h1><font color=blue face=nowdance>("+currentMember.Position+")</font></h1></html>"));
 		
-		add(maincenter,BorderLayout.CENTER);
+		add(maincenter,BorderLayout.NORTH);
 	}
 
 }
