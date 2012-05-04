@@ -165,9 +165,24 @@ public class Notifications extends JPanel {
 		submitPublic.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				String notificationsQuery;
-				notificationsQuery="insert into notifications values(null,null,'"+login.currentMember.MemberId+"','"+contentText.getText()+"');";
-				String membernotificationQuery;
-				membernotificationQuery="insert into notifications values(";
+				notificationsQuery="insert into notifications values(null,null,'"+login.currentMember.MemberId+"','"+contentText.getText()+"',null);";
+				try{
+					int lastNote;
+					ResultSet lastNoteResult;
+					
+					
+					Konnection.getSingleton().update(notificationsQuery);
+					lastNoteResult=Konnection.getSingleton().query("Select max(NotificationId) as NotificationId from notifications");
+					lastNoteResult.next();
+					lastNote=lastNoteResult.getInt("NotificationId");
+					
+					String membernotificationQuery;
+					membernotificationQuery="insert into notificationmember values('"+lastNote+"','0');";
+					Konnection.getSingleton().update(membernotificationQuery);
+				}
+				catch(SQLException e){
+					e.printStackTrace();
+				}
 			}
 		});
 	}
