@@ -14,7 +14,7 @@ import javax.swing.table.TableModel;
 public class MemberManagement extends JPanel{
 	
 	JLabel details;
-	JPanel center,smo,addrm,modify,tableresult;
+	JPanel center,mainTablePanel,addrm,modify,tableresult;
 	
 	JLabel FirstLabel,LastLabel,yearLabel,joinLabel,positionLabel,filterLabel,filter2Label,InvalidMessage,addressLabel,ValidMessage;
 	JTextField FirstText,LastText,yearText,joinText,positionText,addressText;
@@ -22,7 +22,7 @@ public class MemberManagement extends JPanel{
 	JButton backButton,displaylist,backButton2,backButton3,backButton5,addrmButton,filterButton,commitButton;
 	JButton backButton4,deleteMember;
 	JLabel delMessage,baddelMessage;
-	JPanel smo_below;
+	JPanel main_Table_below;
 	JPanel addrm_above,modifyPanel,modifyAbove,modifyBelow;
 	JTable table;
 	JScrollPane tablepane,resultpane;
@@ -84,15 +84,15 @@ public class MemberManagement extends JPanel{
 		table=new JTable(display,colHeads);
 		tablepane=new JScrollPane(table,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		smo=new JPanel();
+		mainTablePanel=new JPanel();
 		
-		smo.setLayout(new BorderLayout());
-		smo.add(tablepane,BorderLayout.NORTH);
+		mainTablePanel.setLayout(new BorderLayout());
+		mainTablePanel.add(tablepane,BorderLayout.NORTH);
 		
-		smo_below=new JPanel();
+		main_Table_below=new JPanel();
 		
-		smo_below.add(filterButton=new JButton("Filter Name: "));
-		smo_below.add(filterText=new TextField(20));
+		main_Table_below.add(filterButton=new JButton("Filter Name: "));
+		main_Table_below.add(filterText=new TextField(20));
 		
 		
 		tableModel =table.getModel();
@@ -139,11 +139,11 @@ public class MemberManagement extends JPanel{
 							i++;
 						}
 						
-						smo.remove(tablepane);
+						mainTablePanel.remove(tablepane);
 						table=new JTable(display1,colHeads1);
 						tablepane=new JScrollPane(table,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-						smo.add(tablepane,BorderLayout.NORTH);
-						smo.validate();
+						mainTablePanel.add(tablepane,BorderLayout.NORTH);
+						mainTablePanel.validate();
 					}
 					catch(SQLException e){
 						e.printStackTrace();
@@ -155,11 +155,11 @@ public class MemberManagement extends JPanel{
 		
 		});
 		
-		smo.add(smo_below,BorderLayout.CENTER);
+		mainTablePanel.add(main_Table_below,BorderLayout.CENTER);
 		
-		MainFrame.getSingleton().mainPanel.add(smo,"tablepane");
+		MainFrame.getSingleton().mainPanel.add(mainTablePanel,"tablepane");
 		
-		smo.add(backButton2=new JButton("Back"),BorderLayout.SOUTH);
+		mainTablePanel.add(backButton2=new JButton("Back"),BorderLayout.SOUTH);
 		
 		center=new JPanel();
 		center.setLayout(new GridLayout(0,3));
