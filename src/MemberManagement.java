@@ -266,17 +266,9 @@ public class MemberManagement extends JPanel{
 		addrm_above.add(InvalidMessage=new JLabel("Invalid Entries"),constraints);
 		InvalidMessage.setVisible(false);
 		constraints.gridy=9;
-		String val=new String();
-		ResultSet rs=test.query("Select max(ID) as ID from members;");
-		try{
-			rs.next();
-		val=rs.getString("ID");
-		System.out.println(val);
-		}catch(Exception q){
-			q.printStackTrace();
-		}
 		
-		ValidMessage=new JLabel("Query Successful !! Remember your member ID please "+(Integer.parseInt(val)+1));
+		
+		ValidMessage=new JLabel("Query Successful !! Remember your to check your member id, its your Username");
 		addrm_above.add(ValidMessage,constraints);
 	    addrm.add(addrm_above,BorderLayout.CENTER);
 	    ValidMessage.setVisible(false);
@@ -315,7 +307,23 @@ public class MemberManagement extends JPanel{
 									int r=test.update(testQuery);
 									if(r>0){
 										
+											String val=new String();
+											ResultSet rs=test.query("Select max(ID) as ID from members;");
+											try{
+												rs.next();
+											val=rs.getString("ID");
+											System.out.println(val);
+											}catch(Exception q){
+												q.printStackTrace();
+											}
+											
+										
+										
 										ValidMessage.setVisible(true);
+										JLabel id=new JLabel("Your ID :"+val);
+										constraints.gridx=0;
+										constraints.gridy=10;
+										addrm_above.add(id,constraints);
 										addrm_above.validate();
 										((AbstractTableModel)tableModel).fireTableDataChanged();
 										
