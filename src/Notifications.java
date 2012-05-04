@@ -164,50 +164,35 @@ public class Notifications extends JPanel {
 		publicNotePanel.add(addPanel,BorderLayout.CENTER);
 		submitPublic.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				String notificationsQuery;
-				notificationsQuery="insert into notifications values(null,null,'"+login.currentMember.MemberId+"','"+contentText.getText()+"',null);";
-				try{
-					int lastNote;
-					ResultSet lastNoteResult;
-					
-					
-					Konnection.getSingleton().update(notificationsQuery);
-					lastNoteResult=Konnection.getSingleton().query("Select max(NotificationId) as NotificationId from notifications");
-					lastNoteResult.next();
-					lastNote=lastNoteResult.getInt("NotificationId");
-					
-					String membernotificationQuery;
-					membernotificationQuery="insert into notificationmember values('"+lastNote+"','0');";
-					Konnection.getSingleton().update(membernotificationQuery);
-				}
-				catch(SQLException e){
-					e.printStackTrace();
-				}
-				refreshNotifications();
+				Note publicNote=new Note();
+				publicNote.content=contentText.getText();
+				publicNote.senderId=login.currentMember.MemberId;
+				sendPublicNotification(publicNote);
 			}
 		});
 	}
 	
 	
 	public void sendPublicNotification(Note publicNote){
-		String updateNotifications;
-		String updateNotificationMember;
-		int notificationId;
+		String notificationsQuery;
+		notificationsQuery="insert into notifications values(null,null,'"+publicNote.senderId+"','"+publicNote.content+"',null);";
 		try{
-			updateNotifications="insert into notifications values(null,CURRENT_TIMESTAMP,'"+publicNote.senderId+"','" + publicNote.content + "');";
-			Konnection.getSingleton().update(updateNotifications);
+			int lastNote;
+			ResultSet lastNoteResult;
 			
-			ResultSet temp=Konnection.getSingleton().query("select max(NotificationId) from notifications");
-			temp.next();
-			publicNote.noteId=temp.getInt("NotificationId");
-			notificationId=publicNote.noteId;
+			Konnection.getSingleton().update(notificationsQuery);
+			lastNoteResult=Konnection.getSingleton().query("Select max(NotificationId) as NotificationId from notifications");
+			lastNoteResult.next();
+			lastNote=lastNoteResult.getInt("NotificationId");
 			
-			updateNotificationMember="insert into notificationmember values('"+ notificationId + "','0');";
-			Konnection.getSingleton().update(updateNotificationMember);
+			String membernotificationQuery;
+			membernotificationQuery="insert into notificationmember values('"+lastNote+"','0');";
+			Konnection.getSingleton().update(membernotificationQuery);
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
+		refreshNotifications();
 	}
 	
 	public void sendPrivateNotification(Note privateNote){
