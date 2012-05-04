@@ -42,11 +42,11 @@ public class Notifications extends JPanel {
 		
 		centerLeftConstraints.gridx=0;
 		centerLeftConstraints.gridy=0;
-		
+		centerLeftConstraints.gridheight=2;
 		centerLeftTop.add(new JLabel(new ImageIcon("Mail-icon.png")),centerLeftConstraints);
 		
-		centerLeftConstraints.gridx=1;
-		centerLeftConstraints.gridy=0;
+		centerLeftConstraints.gridx=0;
+		centerLeftConstraints.gridy=2;
 		
 		centerLeftTop.add(details=new JLabel("Recent Notifications !"),centerLeftConstraints);
 		
@@ -54,7 +54,6 @@ public class Notifications extends JPanel {
 		
 		notificationArea=new JPanel();
 		add(notificationArea,BorderLayout.CENTER);
-		notificationArea.add(centerLeft,BorderLayout.NORTH);
 		bottom=new JPanel();
 		bottom.setLayout(new GridLayout(2,0));
 		newPublicNote=new JButton("Notification to all",new ImageIcon("Y-Birdie-icon.png"));
@@ -111,8 +110,6 @@ public class Notifications extends JPanel {
 		if(notificationArea!=null){
 			remove(notificationArea);
 			notificationArea=new JPanel();
-			notificationArea.setLayout(new BorderLayout());
-			notificationArea.add(centerLeft,BorderLayout.NORTH);
 			add(notificationArea,BorderLayout.CENTER);
 			
 		}
@@ -143,8 +140,7 @@ public class Notifications extends JPanel {
 			}
 			
 			allNotificationsScroll=new JScrollPane((allNotifications));
-			notificationArea.add(centerLeft,BorderLayout.NORTH);
-			notificationArea.add(allNotificationsScroll,BorderLayout.CENTER);
+			notificationArea.add(allNotificationsScroll);
 			notificationArea.validate();
 			
 		}
