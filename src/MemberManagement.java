@@ -128,7 +128,7 @@ public class MemberManagement extends JPanel{
 	    	public void valueChanged(ListSelectionEvent e){
 	    		if(values!=null){
 	    			values.setVisible(false);
-	    			//main_Table_below.remove(values);
+	    			main_Table_below.remove(values);
 	    		}
 	    		
 	    		int [] list=table.getSelectedRows();
@@ -372,6 +372,11 @@ public class MemberManagement extends JPanel{
 			
 	    displaylist.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+				if(values!=null){
+	    			values.setVisible(false);
+	    			main_Table_below.remove(values);
+	    		}
+	    		
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"tablepane");
 			}
 		});
