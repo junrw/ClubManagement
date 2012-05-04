@@ -179,7 +179,6 @@ public class Notifications extends JPanel {
 					String membernotificationQuery;
 					membernotificationQuery="insert into notificationmember values('"+lastNote+"','0');";
 					Konnection.getSingleton().update(membernotificationQuery);
-					refreshNotifications();
 				}
 				catch(SQLException e){
 					e.printStackTrace();

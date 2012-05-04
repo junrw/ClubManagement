@@ -81,7 +81,7 @@ public class MemberManagement extends JPanel{
 			e.printStackTrace();
 		}
 		
-		//'table'
+		//'table' is instantiated here
 		table=new JTable(display,colHeads);
 		tablepane=new JScrollPane(table,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
