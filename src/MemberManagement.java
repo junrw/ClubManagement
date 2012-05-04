@@ -143,6 +143,7 @@ public class MemberManagement extends JPanel{
 	    		main_Table_below.validate();
 	    	}
 	    });
+	    
 	    //using tableModel(abstract class) which controls the data in a table to fire data changes 
 	    tableModel =table.getModel();
 		tableModel.addTableModelListener(new TableModelListener(){

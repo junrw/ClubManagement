@@ -8,7 +8,7 @@ import java.awt.event.*;
 public class mainPage extends JPanel{
 	
 	JPanel mainabove,maincenter;
-	JPanel maincenterTop;
+	JPanel maincenterTop,errorPanel;
 	JButton notifyButton,memberButton,calendarButton,logoutButton;
 	GridBagLayout centerLayout,leftLayout,rightLayout;
 	GridLayout mainLayout;
@@ -43,6 +43,27 @@ public class mainPage extends JPanel{
 		add(mainabove,BorderLayout.CENTER);
 		add(logoutButton=new JButton("Logout"),BorderLayout.SOUTH);
 		
+		errorPanel=new JPanel();
+		errorPanel.setLayout(new BorderLayout());
+		JLabel errorIcon=new JLabel(new ImageIcon("Important-Icon.png"));
+		
+		JLabel errorMsg=new JLabel("<html><h1><b>You do not have the authority to view this Page</b></h1></html>");
+		errorMsg.setHorizontalAlignment(SwingConstants.CENTER);
+		JButton errorButton=new JButton("Back to MainPage");
+		
+		errorPanel.add(errorIcon,BorderLayout.CENTER);
+		errorPanel.add(errorMsg,BorderLayout.NORTH);
+		errorPanel.add(errorButton,BorderLayout.SOUTH);
+		
+		MainFrame.getSingleton().mainPanel.add(errorPanel,"ERROR");
+		
+		
+		errorButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+			}
+		});
+		
 		memberButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"membermanagement");
@@ -51,7 +72,7 @@ public class mainPage extends JPanel{
 		notifyButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				Notifications.getSingleton().refreshNotifications();
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"ERROR");
 			}
 		});
 		calendarButton.addActionListener(new ActionListener(){
