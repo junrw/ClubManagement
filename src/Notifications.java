@@ -12,10 +12,10 @@ public class Notifications extends JPanel {
 	JButton submitPrivate, submitPublic;
 	JButton newPublicNote,newPrivateNote;
 	JPanel publicNotePanel,privateNotePanel;
-	JPanel center,centerTop,centerMiddle,centerBottom,bottom;
+	JPanel centerLeft,centerLeftTop,centerMiddle,centerBottom,bottom;
 	JScrollPane allNotificationsScroll;
 	
-	JTextArea contentText;
+	JTextArea publicContentText,privateContentText;
 	JComboBox toPersonChoice;
 	GridBagConstraints constraints=new GridBagConstraints();
 	JPanel allNotifications,notificationArea;
@@ -32,14 +32,23 @@ public class Notifications extends JPanel {
 		
 		
 		
-		center=new JPanel();
+		centerLeft=new JPanel();
 		
-		center.setLayout(new GridBagLayout());
+		centerLeft.setLayout(new GridBagLayout());
 		
-		centerTop=new JPanel();
-		centerTop.setLayout(new GridBagLayout());
-		centerTop.add(details=new JLabel("Recent Notifications !"),constraints);
-		center.add(centerTop,constraints);
+		GridBagConstraints centerLeftConstraints=new GridBagConstraints();
+		centerLeftTop=new JPanel();
+		centerLeftTop.setLayout(new GridBagLayout());
+		
+		centerLeftConstraints.gridx=0;
+		centerLeftConstraints.gridy=0;
+		centerLeftTop.add(new JLabel(new ImageIcon("Mail-icon.png")),centerLeftConstraints);
+		
+		centerLeftConstraints.gridx=0;
+		centerLeftConstraints.gridy=1;
+		centerLeftTop.add(details=new JLabel("Recent Notifications !"),centerLeftConstraints);
+		
+		centerLeft.add(centerLeftTop,constraints);
 		
 		notificationArea=new JPanel();
 		add(notificationArea,BorderLayout.CENTER);
@@ -58,7 +67,7 @@ public class Notifications extends JPanel {
 		//refreshNotifications();
 		
 		//center.add(centerMiddle,constraints);
-		add(center,BorderLayout.WEST);
+		add(centerLeft,BorderLayout.WEST);
 		back=new JButton("Back to mainpage");
 		add(back,BorderLayout.NORTH);
 		
@@ -158,7 +167,7 @@ public class Notifications extends JPanel {
 		addPanel.add(content=new JLabel("Content:"),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=2;
-		addPanel.add(contentText=new JTextArea(4,20),addConstraints);
+		addPanel.add(publicContentText=new JTextArea(4,20),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
@@ -176,7 +185,7 @@ public class Notifications extends JPanel {
 		submitPublic.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				Note publicNote=new Note();
-				publicNote.content=contentText.getText();
+				publicNote.content=publicContentText.getText();
 				publicNote.senderId=login.currentMember.MemberId;
 				sendPublicNotification(publicNote);
 			}
@@ -213,7 +222,7 @@ public class Notifications extends JPanel {
 		addPanel.add(content=new JLabel("Content:"),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=2;
-		addPanel.add(contentText=new JTextArea(4,20),addConstraints);
+		addPanel.add(privateContentText=new JTextArea(4,20),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
@@ -229,7 +238,7 @@ public class Notifications extends JPanel {
 		
 		submitPrivate.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				int ids[]=new int[50];
+				int ids[]=new int[1];
 				String selectedMember=(String)toPersonChoice.getSelectedItem();
 				String getMemberIdQuery="SELECT ID FROM members WHERE CONCAT( FirstName,  ' ', LastName ) =  '"+selectedMember+"'; ";
 				ResultSet getMemberIdResult=Konnection.getSingleton().query(getMemberIdQuery);
@@ -240,7 +249,7 @@ public class Notifications extends JPanel {
 				catch(SQLException e){
 					e.printStackTrace();
 				}
-				Note privateNote=makePrivateNote(contentText.getText(),ids);
+				Note privateNote=makePrivateNote(privateContentText.getText(),ids);
 				sendPrivateNotification(privateNote);
 			}
 		});
