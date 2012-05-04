@@ -304,7 +304,7 @@ public class MemberManagement extends JPanel{
 									else if(positionText.getText().contains("Head")){
 										auth=2;
 									}
-									else if(positionText.getText().compareToIgnoreCase("Management Cmommitee")==0){
+									else if(positionText.getText().compareToIgnoreCase("Management Commitee")==0){
 										auth=3;
 									}
 									else if(positionText.getText().compareToIgnoreCase("Member")==0){
