@@ -16,13 +16,13 @@ public class MemberManagement extends JPanel{
 	JLabel details;
 	JPanel center,smo,addrm,modify,tableresult;
 	
-	JLabel FirstLabel,LastLabel,yearLabel,joinLabel,positionLabel,filterLabel;
-	JTextField FirstText,LastText,yearText,joinText,positionText;
-	TextField filterText;
-	JButton backButton,displaylist,backButton2,backButton3,addrmButton,filterButton,commitButton;
+	JLabel FirstLabel,LastLabel,yearLabel,joinLabel,positionLabel,filterLabel,filter2Label,InvalidMessage,addressLabel,ValidMessage;
+	JTextField FirstText,LastText,yearText,joinText,positionText,addressText;
+	TextField filterText,filter2Text;
+	JButton backButton,displaylist,backButton2,backButton3,backButton5,addrmButton,filterButton,commitButton;
 	JButton backButton4;
 	JPanel smo_below;
-	JPanel addrm_above;
+	JPanel addrm_above,modifyPanel,modifyAbove,modifyBelow;
 	JTable table;
 	JScrollPane tablepane,resultpane;
 	String filter=new String();
@@ -55,7 +55,7 @@ public class MemberManagement extends JPanel{
 		
 		
 		int i=0;
-		Object [][] display=new Object[10][10];
+		Object [][] display=new Object[130][10];
 		String[] colHeads={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
 		ResultSet testResult;
 		Konnection test= Konnection.getSingleton();
@@ -114,7 +114,7 @@ public class MemberManagement extends JPanel{
 					
 					//DefaultTableModel model=new DefaultTableModel();
 					
-					Object [][] display1=new Object[10][10];
+					Object [][] display1=new Object[30][10];
 					String[] colHeads1={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
 					ResultSet testResult;
 					Konnection test= Konnection.getSingleton();
@@ -165,8 +165,16 @@ public class MemberManagement extends JPanel{
 		
 		center.add(displaylist=new JButton("display the member list"));
 		center.add(addrmButton=new JButton("Add a Member"));
-		center.add(filterButton=new JButton("Modify/Remove a Member"));
+		center.add(filterButton=new JButton("Remove a Member"));
 	    add(center,BorderLayout.CENTER);
+	    
+	    modifyPanel=new JPanel();
+	    modifyPanel.setLayout(new BorderLayout());
+	    
+	    modifyPanel.add(backButton5=new JButton("Back"),BorderLayout.SOUTH);
+		modifyAbove=new JPanel();
+		
+		
 		
 		addrm=new JPanel();
 		addrm.setLayout(new BorderLayout());
@@ -205,13 +213,39 @@ public class MemberManagement extends JPanel{
 	    addrm_above.add(positionText=new JTextField(20),constraints);
 	    constraints.gridx=0;
 	    constraints.gridy=5;
+	    addrm_above.add(addressLabel=new JLabel("Address: "),constraints);
+	    constraints.gridx=1;
+	    constraints.gridy=5;
+	    addrm_above.add(addressText=new JTextField(20),constraints);
+	    constraints.gridx=0;
+	    constraints.gridy=6;
 	    
 	    constraints.gridheight=2;
 	    constraints.gridwidth=2;
 	    addrm_above.add(commitButton=new JButton("commit to database"),constraints);
 	    addrm.add(backButton3=new JButton("Back"),BorderLayout.SOUTH);
+	    constraints.gridx=0;
+		constraints.gridy=8;
+		
+		constraints.gridheight=1;
+		constraints.gridwidth=2;
+		addrm_above.add(InvalidMessage=new JLabel("Invalid Entries"),constraints);
+		InvalidMessage.setVisible(false);
+		constraints.gridy=9;
+		String val=new String();
+		ResultSet rs=test.query("Select max(ID) as ID from members;");
+		try{
+			rs.next();
+		val=rs.getString("ID");
+		System.out.println(val);
+		}catch(Exception q){
+			q.printStackTrace();
+		}
+		
+		ValidMessage=new JLabel("Query Successful !! Remember your member ID please "+(Integer.parseInt(val)+1));
+		addrm_above.add(ValidMessage,constraints);
 	    addrm.add(addrm_above,BorderLayout.CENTER);
-	    
+	    ValidMessage.setVisible(false);
 	    
 	    MainFrame.getSingleton().mainPanel.add(addrm,"add");
 	    
@@ -219,15 +253,39 @@ public class MemberManagement extends JPanel{
 	    commitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 								if(FirstText.getText().isEmpty()||LastText.getText().isEmpty()||yearText.getText().isEmpty()||positionText.getText().isEmpty()||joinText.getText().isEmpty()){
-									constraints.gridx=0;
-									constraints.gridy=6;
-									
-									constraints.gridheight=2;
-									constraints.gridwidth=2;
-									
-									addrm_above.add(new JLabel("Invalid Entries"),constraints);
+									InvalidMessage.setVisible(true);
+									System.out.println("Invalid Entries !!");
+									addrm_above.validate();
 								}
 								else{
+									InvalidMessage.setVisible(false);
+					
+									int auth=0;
+									Konnection test= Konnection.getSingleton();
+									if(positionText.getText().compareToIgnoreCase("Board Member")==0){
+										auth=2;
+									}
+									else if(positionText.getText().compareToIgnoreCase("Treasurer")==0){
+										auth=2;
+									}
+									else if(positionText.getText().contains("Head")){
+										auth=2;
+									}
+									else if(positionText.getText().compareToIgnoreCase("Management Cmommitee")==0){
+										auth=3;
+									}
+									else if(positionText.getText().compareToIgnoreCase("Member")==0){
+										auth=4;
+									}
+									String testQuery="Insert into members values(null"+",'"+FirstText.getText()+"','"+LastText.getText()+"','"+joinText.getText()+"','"+positionText.getText()+"','"+(FirstText.getText()).charAt(0)+(LastText.getText()).charAt(0)+"','"+addressText.getText()+"','"+auth+"');";
+									int r=test.update(testQuery);
+									if(r>0){
+										
+										ValidMessage.setVisible(true);
+										addrm_above.validate();
+										((AbstractTableModel)tableModel).fireTableDataChanged();
+										
+									}
 									
 									
 									
@@ -250,7 +308,16 @@ public class MemberManagement extends JPanel{
 			}
 			
 		});
-
+		backButton5.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				table.setVisible(true);
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+			
+			
+			}
+			
+		});
+	
 		backButton3.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
