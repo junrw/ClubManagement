@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -21,7 +23,7 @@ public class MemberManagement extends JPanel{
 	TextField filterText,filter2Text;
 	JButton backButton,displaylist,backButton2,backButton3,backButton5,addrmButton,filterButton,commitButton;
 	JButton backButton4,deleteMember;
-	JLabel delMessage,baddelMessage;
+	JLabel delMessage,baddelMessage,values;
 	JPanel main_Table_below;
 	JPanel addrm_above,modifyPanel,modifyAbove,modifyBelow;
 	JTable table;
@@ -54,6 +56,24 @@ public class MemberManagement extends JPanel{
 			}
 		});
 		
+		//Main page of the Member Management panel buttons+Icons !
+				center=new JPanel();
+				center.setLayout(new GridLayout(0,3));
+				
+				
+				center.add(displaylist=new JButton("Display the member list",new ImageIcon("Bag-icon.png")));
+				displaylist.setHorizontalTextPosition(SwingConstants.CENTER);
+				displaylist.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+				center.add(addrmButton=new JButton("Add a Member",new ImageIcon("Backup-icon.png")));
+				addrmButton.setHorizontalTextPosition(SwingConstants.CENTER);
+				addrmButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+				
+				center.add(filterButton=new JButton("Remove a Member",new ImageIcon("Recycle-Bin-Full-2-icon.png")));
+				filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
+				filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+			    add(center,BorderLayout.CENTER);
+			    
 		//Table Creation and SQL queries for the same 
 		int i=0;
 		Object [][] display=new Object[130][10];
@@ -92,21 +112,39 @@ public class MemberManagement extends JPanel{
 		
 		main_Table_below=new JPanel();
 		
+		//Filter Box and Label for name Filtering
 		main_Table_below.add(filterButton=new JButton("Filter Name: "));
 		main_Table_below.add(filterText=new TextField(20));
-		
-		
-		tableModel =table.getModel();
-	   
-		filterText.addTextListener(new TextListener(){
+				
+	    filterText.addTextListener(new TextListener(){
 			public void textValueChanged(TextEvent te){
 				filter=filterText.getText();
 				((AbstractTableModel)tableModel).fireTableDataChanged();
 				
 			}
 		});
-		
-		
+		//for List Selection adding listener 
+	    table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	    	public void valueChanged(ListSelectionEvent e){
+	    		if(values!=null){
+	    			values.setVisible(false);
+	    			//main_Table_below.remove(values);
+	    		}
+	    		
+	    		int [] list=table.getSelectedRows();
+	    		String lists="";
+	    		for(int x:list){
+	    			lists=lists+" "+table.getValueAt(x,0);
+	    		}
+	    		
+	    		values=new JLabel("The selected member ids are :"+lists);
+	    		values.setVisible(true);
+	    		main_Table_below.add(values);
+	    		main_Table_below.validate();
+	    	}
+	    });
+	    //using tableModel(abstract class) which controls the data in a table to fire data changes 
+	    tableModel =table.getModel();
 		tableModel.addTableModelListener(new TableModelListener(){
 			
 			public void tableChanged(TableModelEvent a){
@@ -156,30 +194,17 @@ public class MemberManagement extends JPanel{
 		
 		});
 		
+		//adding table panel to main set of panels
 		mainTablePanel.add(main_Table_below,BorderLayout.CENTER);
-		
 		MainFrame.getSingleton().mainPanel.add(mainTablePanel,"tablepane");
-		
 		mainTablePanel.add(backButton2=new JButton("Back"),BorderLayout.SOUTH);
 		
-		center=new JPanel();
-		center.setLayout(new GridLayout(0,3));
 		
 		
-		center.add(displaylist=new JButton("Display the member list",new ImageIcon("Bag-icon.png")));
-		displaylist.setHorizontalTextPosition(SwingConstants.CENTER);
-		displaylist.setVerticalTextPosition(SwingConstants.BOTTOM);
-
-		center.add(addrmButton=new JButton("Add a Member",new ImageIcon("Backup-icon.png")));
-		addrmButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		addrmButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		
-		center.add(filterButton=new JButton("Remove a Member",new ImageIcon("Recycle-Bin-Full-2-icon.png")));
-		filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-	    add(center,BorderLayout.CENTER);
 	    
-	    modifyPanel=new JPanel();
+	    //Render the Panel controlling the deletion of members
+		
+		modifyPanel=new JPanel();
 	    modifyPanel.setLayout(new BorderLayout());
 	    MainFrame.getSingleton().mainPanel.add(modifyPanel,"delete");
 	    GridBagConstraints constraints2=new GridBagConstraints();
@@ -219,10 +244,11 @@ public class MemberManagement extends JPanel{
 		});
 		
 		
+		//Rendering the Add a Member panel 
 		addrm=new JPanel();
 		addrm.setLayout(new BorderLayout());
 		addrm_above=new JPanel();
-		
+		//The form
 		addrm_above.setLayout(new GridBagLayout());
 		constraints.gridx=0;
 		constraints.gridy=0;
@@ -270,14 +296,14 @@ public class MemberManagement extends JPanel{
 	    constraints.gridx=0;
 		constraints.gridy=8;
 		
-		constraints.gridheight=1;
+		constraints.gridheight=2;
 		constraints.gridwidth=2;
 		addrm_above.add(InvalidMessage=new JLabel("Invalid Entries"),constraints);
 		InvalidMessage.setVisible(false);
-		constraints.gridy=9;
+		constraints.gridy=10;
 		
 		
-		ValidMessage=new JLabel("Query Successful !! Remember your member id, its your Username");
+		ValidMessage=new JLabel(new ImageIcon());
 		addrm_above.add(ValidMessage,constraints);
 	    addrm.add(addrm_above,BorderLayout.CENTER);
 	    ValidMessage.setVisible(false);
@@ -329,9 +355,9 @@ public class MemberManagement extends JPanel{
 										
 										
 										ValidMessage.setVisible(true);
-										JLabel id=new JLabel("Your ID :"+val);
+										JLabel id=new JLabel("Your ID is"+val);
 										constraints.gridx=0;
-										constraints.gridy=10;
+										constraints.gridy=12;
 										addrm_above.add(id,constraints);
 										addrm_above.validate();
 										((AbstractTableModel)tableModel).fireTableDataChanged();
