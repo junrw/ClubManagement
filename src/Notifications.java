@@ -7,7 +7,8 @@ import java.sql.*;
 public class Notifications extends JPanel {
 	JLabel details;
 	JButton back;
-	JPanel center;
+	JPanel center,centerTop,centerMiddle,centerBottom,bottom;
+	JScrollPane allNotificationsScroll;
 	GridBagConstraints constraints=new GridBagConstraints();
 	
 	private static final Notifications singleton=new Notifications();
@@ -20,12 +21,27 @@ public class Notifications extends JPanel {
 		
 		
 		setLayout(new BorderLayout());
+		
+		
+		
 		center=new JPanel();
 		
 		center.setLayout(new GridBagLayout());
-		center.add(details=new JLabel("Here are your recent Notifications !"),constraints);
-		add(center,BorderLayout.CENTER);
 		
+		centerTop=new JPanel();
+		centerTop.setLayout(new GridBagLayout());
+		centerTop.add(details=new JLabel("Here are your recent Notifications !"),constraints);
+		center.add(centerTop,constraints);
+		
+		
+		//centerMiddle=new JPanel();
+		allNotificationsScroll=new JScrollPane();
+		//centerMiddle.add(allNotificationsScroll);
+		add(allNotificationsScroll,BorderLayout.CENTER);
+		refreshNotifications();
+		
+		//center.add(centerMiddle,constraints);
+		add(center,BorderLayout.WEST);
 		
 		back=new JButton("Back to mainpage");
 		add(back,BorderLayout.NORTH);
@@ -34,6 +50,38 @@ public class Notifications extends JPanel {
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 			}
 		});
+	}
+	
+	public void refreshNotifications(){
+		remove(allNotificationsScroll);
+		allNotificationsScroll=new JScrollPane();
+		String currentNotificationsQuery;
+		ResultSet currentNotificationResult;
+		try{
+			currentNotificationsQuery="select * from notifications where NotificationId IN (Select NotificationId from notificationmember where MemberId=' "+ login.currentMember.MemberId + "');";
+			currentNotificationResult=Konnection.getSingleton().query(currentNotificationsQuery);
+			while(currentNotificationResult.next()){
+				JPanel tempNote= new JPanel();
+				tempNote.setLayout(new GridLayout(0,1));
+				String memberFrom=currentNotificationResult.getString("MemberFrom");
+				String message=currentNotificationResult.getString("Content");
+				String timeAt=currentNotificationResult.getString("Time");
+				tempNote.add(new JLabel("From: " + memberFrom));
+				tempNote.add(new JLabel("Time: " + timeAt));
+				tempNote.add(new JLabel("Message: "+ message));
+				
+				System.out.println("\nFrom:" +memberFrom+"\nTime: "+timeAt+"\nMessage: "+message);
+				
+				allNotificationsScroll.getViewport().add(tempNote);
+			}
+			
+			add(allNotificationsScroll);
+			validate();
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void sendPublicNotification(Note publicNote){

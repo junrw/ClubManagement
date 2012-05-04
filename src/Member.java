@@ -8,9 +8,11 @@ public class Member {
 	public String Position;
 	public String Address;
 	public String Authority;
+	public int MemberId;
 	
 	public void updateMember(ResultSet memberDetails){
 		try{
+			MemberId=memberDetails.getInt("ID");
 			FirstName=memberDetails.getString("FirstName");
 			LastName=memberDetails.getString("LastName");
 			Address=memberDetails.getString("Address");
@@ -24,7 +26,8 @@ public class Member {
 	}
 	
 	public void ConsoleOutput(){
-		System.out.println("\nFirst Name: " + FirstName);
+		System.out.println("\nMember Id: "+ MemberId);
+		System.out.println("First Name: " + FirstName);
 		System.out.println("Last Name: " + LastName);
 		System.out.println("Address: " + Address);
 		System.out.println("Position: " + Position);

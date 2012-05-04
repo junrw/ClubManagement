@@ -85,6 +85,7 @@ login(){
 				try{
 					memberDetails.next();
 					if(pass.equals(memberDetails.getString("Password"))){
+						currentMember.MemberId=memberDetails.getInt("ID");
 						currentMember.FirstName=memberDetails.getString("FirstName");
 						currentMember.LastName=memberDetails.getString("LastName");
 						currentMember.Address=memberDetails.getString("Address");
