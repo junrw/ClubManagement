@@ -23,10 +23,11 @@ public class MemberManagement extends JPanel{
 	TextField filterText,filter2Text;
 	JButton backButton,displaylist,backButton2,backButton3,backButton5,addrmButton,filterButton,commitButton;
 	JButton backButton4,deleteMember;
-	JLabel delMessage,baddelMessage,values;
+	JLabel delMessage,baddelMessage,values,tick,id;
 	JPanel main_Table_below;
 	JPanel addrm_above,modifyPanel,modifyAbove,modifyBelow;
 	JTable table;
+	JComboBox positionCombo;
 	JScrollPane tablepane,resultpane;
 	String filter=new String();
 		
@@ -72,8 +73,58 @@ public class MemberManagement extends JPanel{
 				center.add(filterButton=new JButton("Remove a Member",new ImageIcon("Recycle-Bin-Full-2-icon.png")));
 				filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
 				filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+				
 			    add(center,BorderLayout.CENTER);
+			    //Render the Panel controlling the deletion of members
+				
+				modifyPanel=new JPanel();
+			    modifyPanel.setLayout(new BorderLayout());
+			    MainFrame.getSingleton().mainPanel.add(modifyPanel,"delete");
 			    
+			    GridBagConstraints constraints2=new GridBagConstraints();
+			    modifyPanel.add(backButton5=new JButton("Back"),BorderLayout.SOUTH);
+				modifyAbove=new JPanel();
+				modifyAbove.setLayout(new GridBagLayout());
+				constraints2.gridy=0;
+				modifyAbove.add(filter2Label=new JLabel("Enter ID: "),constraints2);
+				modifyAbove.add(filter2Text=new TextField(20),constraints2);
+				constraints2.gridy=1;
+				constraints2.gridwidth=2;
+				modifyAbove.add(deleteMember=new JButton("Delete Member"),constraints2);
+				constraints2.gridy=2;
+				modifyAbove.add(delMessage=new JLabel("Delete Successful !"),constraints2);
+				delMessage.setVisible(false);
+				constraints2.gridy=3;
+				modifyAbove.add(baddelMessage=new JLabel("Delete Unsuccessful !"),constraints2);
+				baddelMessage.setVisible(false);
+				modifyPanel.add(modifyAbove,BorderLayout.CENTER);
+				
+				deleteMember.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent ae){
+						String val=new String();
+						Konnection test= Konnection.getSingleton();
+						int r1=test.update("Delete from members where ID='"+filter2Text.getText()+"';");
+						if(r1>0){
+							baddelMessage.setVisible(false);
+							delMessage.setVisible(true);
+							((AbstractTableModel)tableModel).fireTableDataChanged();
+						}else{
+							delMessage.setVisible(false);
+							baddelMessage.setVisible(true);
+						}
+						modifyAbove.validate();
+						
+					}
+				});
+				
+				filterButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent ae){
+						delMessage.setVisible(false);
+						baddelMessage.setVisible(false);
+						MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"delete");
+					}
+					
+				});	    
 		//Table Creation and SQL queries for the same 
 		int i=0;
 		Object [][] display=new Object[130][10];
@@ -203,53 +254,13 @@ public class MemberManagement extends JPanel{
 		
 		
 	    
-	    //Render the Panel controlling the deletion of members
-		
-		modifyPanel=new JPanel();
-	    modifyPanel.setLayout(new BorderLayout());
-	    MainFrame.getSingleton().mainPanel.add(modifyPanel,"delete");
-	    GridBagConstraints constraints2=new GridBagConstraints();
-	    modifyPanel.add(backButton5=new JButton("Back"),BorderLayout.SOUTH);
-		modifyAbove=new JPanel();
-		modifyAbove.setLayout(new GridBagLayout());
-		constraints2.gridy=0;
-		modifyAbove.add(filter2Label=new JLabel("Enter ID: "),constraints2);
-		modifyAbove.add(filter2Text=new TextField(20),constraints2);
-		constraints2.gridy=1;
-		constraints2.gridwidth=2;
-		modifyAbove.add(deleteMember=new JButton("Delete Member"),constraints2);
-		constraints2.gridy=2;
-		modifyAbove.add(delMessage=new JLabel("Delete Successful !"),constraints2);
-		delMessage.setVisible(false);
-		constraints2.gridy=3;
-		modifyAbove.add(baddelMessage=new JLabel("Delete Unsuccessful !"),constraints2);
-		baddelMessage.setVisible(false);
-		modifyPanel.add(modifyAbove,BorderLayout.CENTER);
-		
-		deleteMember.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				String val=new String();
-				Konnection test= Konnection.getSingleton();
-				int r1=test.update("Delete from members where ID='"+filter2Text.getText()+"';");
-				if(r1>0){
-					baddelMessage.setVisible(false);
-					delMessage.setVisible(true);
-					((AbstractTableModel)tableModel).fireTableDataChanged();
-				}else{
-					delMessage.setVisible(false);
-					baddelMessage.setVisible(true);
-				}
-				modifyAbove.validate();
-				
-			}
-		});
-		
+	   
 		
 		//Rendering the Add a Member panel 
 		addrm=new JPanel();
 		addrm.setLayout(new BorderLayout());
 		addrm_above=new JPanel();
-		//The form
+		//The form for adding members
 		addrm_above.setLayout(new GridBagLayout());
 		constraints.gridx=0;
 		constraints.gridy=0;
@@ -278,9 +289,13 @@ public class MemberManagement extends JPanel{
 	    constraints.gridx=0;
 		constraints.gridy=4;
 	    addrm_above.add(positionLabel=new JLabel("Position:"),constraints);
-	    constraints.gridx=1;
+	    constraints.gridx=2;
 		constraints.gridy=4;
 	    addrm_above.add(positionText=new JTextField(20),constraints);
+	    constraints.gridx=1;
+	    constraints.gridy=4;
+	    positionText.setVisible(false);
+	    addrm_above.add(positionCombo=new JComboBox(),constraints);
 	    constraints.gridx=0;
 	    constraints.gridy=5;
 	    addrm_above.add(addressLabel=new JLabel("Address: "),constraints);
@@ -290,9 +305,26 @@ public class MemberManagement extends JPanel{
 	    constraints.gridx=0;
 	    constraints.gridy=6;
 	    
+	    positionCombo.addItem("Choose position");
+	    positionCombo.addItem("Board Member");
+	    positionCombo.addItem("Management Committee");
+	    positionCombo.addItem("Member");
+	    
+	    positionCombo.addItemListener(new ItemListener(){
+	    	public void itemStateChanged(ItemEvent ie){
+	    		if(((String)positionCombo.getSelectedItem()).compareToIgnoreCase("Board Member")==0){
+	    			positionText.setVisible(true);
+	    			addrm_above.validate();
+	    		}
+	    		else{
+	    			positionText.setVisible(false);
+	    			addrm_above.validate();
+	    		}
+	    	}
+	    });
 	    constraints.gridheight=2;
 	    constraints.gridwidth=2;
-	    addrm_above.add(commitButton=new JButton("commit to database"),constraints);
+	    addrm_above.add(commitButton=new JButton("Commit to Database"),constraints);
 	    addrm.add(backButton3=new JButton("Back"),BorderLayout.SOUTH);
 	    constraints.gridx=0;
 		constraints.gridy=8;
@@ -314,7 +346,7 @@ public class MemberManagement extends JPanel{
 	    
 	    commitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-								if(FirstText.getText().isEmpty()||LastText.getText().isEmpty()||yearText.getText().isEmpty()||positionText.getText().isEmpty()||joinText.getText().isEmpty()){
+								if(FirstText.getText().isEmpty()||LastText.getText().isEmpty()||joinText.getText().isEmpty()){
 									InvalidMessage.setVisible(true);
 									System.out.println("Invalid Entries !!");
 									addrm_above.validate();
@@ -323,23 +355,22 @@ public class MemberManagement extends JPanel{
 									InvalidMessage.setVisible(false);
 					
 									int auth=0;
+									String pos=new String();
 									Konnection test= Konnection.getSingleton();
-									if(positionText.getText().compareToIgnoreCase("Board Member")==0){
+									if(((String)positionCombo.getSelectedItem()).compareToIgnoreCase("Board Member")==0){
 										auth=2;
+										pos=positionText.getText();
 									}
-									else if(positionText.getText().compareToIgnoreCase("Treasurer")==0){
-										auth=2;
-									}
-									else if(positionText.getText().contains("Head")){
-										auth=2;
-									}
-									else if(positionText.getText().compareToIgnoreCase("Management Commitee")==0){
+									else if(((String)positionCombo.getSelectedItem()).compareToIgnoreCase("Management Committee")==0){
 										auth=3;
+										pos="Management Committee";
 									}
-									else if(positionText.getText().compareToIgnoreCase("Member")==0){
+									else if(((String)positionCombo.getSelectedItem()).compareToIgnoreCase("Member")==0){
 										auth=4;
+										pos="Member";
 									}
-									String testQuery="Insert into members values(null"+",'"+FirstText.getText()+"','"+LastText.getText()+"','"+joinText.getText()+"','"+positionText.getText()+"','"+(FirstText.getText()).charAt(0)+(LastText.getText()).charAt(0)+"','"+addressText.getText()+"','"+auth+"');";
+									
+									String testQuery="Insert into members values(null"+",'"+FirstText.getText()+"','"+LastText.getText()+"','"+joinText.getText()+"','"+pos+"','"+(FirstText.getText()).charAt(0)+(LastText.getText()).charAt(0)+"','"+addressText.getText()+"','"+auth+"');";
 									int r=test.update(testQuery);
 									if(r>0){
 										
@@ -356,17 +387,26 @@ public class MemberManagement extends JPanel{
 										
 										
 										ValidMessage.setVisible(true);
-										JLabel id=new JLabel("Your ID is"+val);
+										id=new JLabel("Your ID is "+val);
+										tick=new JLabel(new ImageIcon("Finished-icon.png"));
 										constraints.gridx=0;
 										constraints.gridy=12;
+										constraints.gridheight=1;
+										constraints.gridwidth=1;
 										addrm_above.add(id,constraints);
+										constraints.gridx=1;
+										constraints.gridy=12;
+										addrm_above.add(tick,constraints);
 										addrm_above.validate();
 										((AbstractTableModel)tableModel).fireTableDataChanged();
 										
 									}
+									else{
+									InvalidMessage.setVisible(true);
+									System.out.println("Invalid Entries !!");
+									addrm_above.validate();
 									
-									
-									
+									}
 								}
 			}
 		});
@@ -410,17 +450,17 @@ public class MemberManagement extends JPanel{
 		
 		addrmButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+				positionText.setVisible(false);
+				if(id!=null||tick!=null){
+				id.setVisible(false);
+				tick.setVisible(false);
+				}
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"add");
 			}
 			
 		});
 		
-		filterButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"delete");
-			}
-			
-		});
+		
 		
 	
 	}
