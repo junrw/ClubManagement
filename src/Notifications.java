@@ -7,13 +7,16 @@ import java.sql.*;
 public class Notifications extends JPanel {
 	JLabel details;
 	JLabel from, fromPerson,to, content;
-	JButton back,back2,submitPublic;
+	JButton back,back2;
+	
+	JButton submitPrivate, submitPublic;
 	JButton newPublicNote,newPrivateNote;
 	JPanel publicNotePanel,privateNotePanel;
 	JPanel center,centerTop,centerMiddle,centerBottom,bottom;
 	JScrollPane allNotificationsScroll;
 	JTextField toPerson;
 	JTextArea contentText;
+	JComboBox toPersonChoice;
 	GridBagConstraints constraints=new GridBagConstraints();
 	JPanel allNotifications,notificationArea;
 	private static final Notifications singleton=new Notifications();
@@ -66,6 +69,10 @@ public class Notifications extends JPanel {
 		publicNotePanel.add(back2,BorderLayout.SOUTH);
 		
 		
+		privateNotePanel=new JPanel();
+		privateNotePanel.setLayout(new BorderLayout());
+		privateNotePanel.add(back2,BorderLayout.SOUTH);
+		
 		
 		back.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
@@ -83,6 +90,13 @@ public class Notifications extends JPanel {
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().mainPanel.add(publicNotePanel,"publicNotification");
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"publicNotification");
+			}
+		});
+		
+		newPrivateNote.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().mainPanel.add(privateNotePanel,"privateNotification");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel, "privateNotification");
 			}
 		});
 		
@@ -168,6 +182,53 @@ public class Notifications extends JPanel {
 				publicNote.content=contentText.getText();
 				publicNote.senderId=login.currentMember.MemberId;
 				sendPublicNotification(publicNote);
+			}
+		});
+	}
+	
+	public void makePrivateNoteGUI(){
+		JPanel addPanel=new JPanel();
+		addPanel.setLayout(new GridBagLayout());
+		GridBagConstraints addConstraints=new GridBagConstraints();
+		addConstraints.gridx=0;
+		addConstraints.gridy=0;
+		addPanel.add(from=new JLabel("From:"),addConstraints);
+		addConstraints.gridx=1;
+		addConstraints.gridy=0;
+		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=1;
+		addPanel.add(toPersonChoice=new JComboBox(),addConstraints);
+		addConstraints.gridx=1;
+		addConstraints.gridy=1;
+		addPanel.add(new JLabel("All Members"),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=2;
+		addPanel.add(content=new JLabel("Content:"),addConstraints);
+		addConstraints.gridx=1;
+		addConstraints.gridy=2;
+		addPanel.add(contentText=new JTextArea(4,20),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=3;
+		addConstraints.gridwidth=2;
+		addPanel.add(submitPublic=new JButton("Send"),addConstraints);
+		
+		privateNotePanel.add(addPanel,BorderLayout.CENTER);
+		submitPrivate.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				int ids[]=new int[50];
+				String selectedMember=(String)toPersonChoice.getSelectedItem();
+				String getMemberIdQuery="SELECT ID FROM members WHERE CONCAT( FirstName,  ' ', LastName ) =  '"+selectedMember+"'; ";
+				ResultSet getMemberIdResult=Konnection.getSingleton().query(getMemberIdQuery);
+				try{
+					getMemberIdResult.next();
+					ids[0]=getMemberIdResult.getInt("ID");
+				}
+				catch(SQLException e){
+					e.printStackTrace();
+				}
+				Note privateNote=makePrivateNote(contentText.getText(),ids);
+				sendPrivateNotification(privateNote);
 			}
 		});
 	}
