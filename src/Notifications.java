@@ -200,10 +200,10 @@ public class Notifications extends JPanel {
 		String updateNotificationMember;
 		int notificationId;
 		try{
-			updateNotifications="insert into notifications values(null,CURRENT_TIMESTAMP,'"+privateNote.senderId+"','" + privateNote.content + "');";
+			updateNotifications="insert into notifications values(null,null,'"+privateNote.senderId+"','" + privateNote.content + "',null);";
 			Konnection.getSingleton().update(updateNotifications);
 			
-			ResultSet temp=Konnection.getSingleton().query("select max(NotificationId) from notifications");
+			ResultSet temp=Konnection.getSingleton().query("select max(NotificationId) as NotificationId from notifications");
 			temp.next();
 			privateNote.noteId=temp.getInt("NotificationId");
 			notificationId=privateNote.noteId;
@@ -215,6 +215,13 @@ public class Notifications extends JPanel {
 		catch(SQLException e){
 			e.printStackTrace();
 		}
+	}
+	
+	public Note makePrivateNote(String content, int id[]){
+		Note privateNote=new Note();
+		privateNote.senderId=login.currentMember.MemberId;
+		privateNote.content=content;
+		return privateNote;
 	}
 	
 	
