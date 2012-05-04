@@ -170,9 +170,10 @@ public class MemberManagement extends JPanel{
 	    
 	    modifyPanel=new JPanel();
 	    modifyPanel.setLayout(new BorderLayout());
-	    
+	    MainFrame.getSingleton().mainPanel.add(modifyPanel,"delete");
 	    modifyPanel.add(backButton5=new JButton("Back"),BorderLayout.SOUTH);
 		modifyAbove=new JPanel();
+		
 		
 		
 		
@@ -334,7 +335,7 @@ public class MemberManagement extends JPanel{
 		
 		filterButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"delete");
 			}
 			
 		});
