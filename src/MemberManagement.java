@@ -45,7 +45,7 @@ public class MemberManagement extends JPanel{
 		constraints=new GridBagConstraints();
 		
 		
-		
+		//back button which gets you back to the main page, this button is on top of the page
 		backButton=new JButton("Back to mainpage");
 		add(backButton,BorderLayout.NORTH);
 		backButton.addActionListener(new ActionListener(){
@@ -54,7 +54,7 @@ public class MemberManagement extends JPanel{
 			}
 		});
 		
-		
+		//Table Creation and SQL queries for the same 
 		int i=0;
 		Object [][] display=new Object[130][10];
 		String[] colHeads={"ID","FirstName","LastName","JoinDate","Position","Address"}; 
@@ -81,6 +81,7 @@ public class MemberManagement extends JPanel{
 			e.printStackTrace();
 		}
 		
+		//'table'
 		table=new JTable(display,colHeads);
 		tablepane=new JScrollPane(table,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
