@@ -82,7 +82,7 @@ public class Notifications extends JPanel {
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().mainPanel.add(privateNotePanel,"privateNotification");
 				updatePrivateNotificationMemberList();
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel, "privateNotification");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"privateNotification");
 			}
 		});
 		
