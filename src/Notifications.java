@@ -301,6 +301,7 @@ public class Notifications extends JPanel {
 		Note privateNote=new Note();
 		privateNote.senderId=login.currentMember.MemberId;
 		privateNote.content=content;
+		privateNote.destinationIds=id;
 		return privateNote;
 	}
 	
