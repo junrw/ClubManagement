@@ -98,6 +98,8 @@ login(){
 						MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
 						Notifications.getSingleton().makePublicNoteGUI();
 						Notifications.getSingleton().makePrivateNoteGUI();
+						incorrect_input.setVisible(false);
+						reset.doClick();
 					}
 					else {
 						incorrect_input.setVisible(true);

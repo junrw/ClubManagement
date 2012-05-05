@@ -406,7 +406,7 @@ public class MemberManagement extends JPanel{
 										
 										
 										ValidMessage.setVisible(true);
-										id=new JLabel("Your ID is "+val);
+										id=new JLabel("<html><b>Your ID is "+val+"</b></html>");
 										tick=new JLabel(new ImageIcon("Finished-icon.png"));
 										constraints.gridx=0;
 										constraints.gridy=12;

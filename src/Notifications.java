@@ -19,6 +19,9 @@ public class Notifications extends JPanel {
 	JComboBox toPersonChoice;
 	GridBagConstraints constraints=new GridBagConstraints();
 	JPanel allNotifications,notificationArea;
+	String sendSuccess="<html><font color=green> Notification Sent </font></html>";
+	JLabel sendSuccessLabel=new JLabel(sendSuccess);
+	
 	private static final Notifications singleton=new Notifications();
 	public static Notifications getSingleton(){
 		return singleton;
@@ -157,32 +160,38 @@ public class Notifications extends JPanel {
 	public void makePublicNoteGUI(){
 		publicNotePanel=new JPanel();
 		publicNotePanel.setLayout(new BorderLayout());
-		
+
 		JPanel addPanel=new JPanel();
 		addPanel.setLayout(new GridBagLayout());
+		addPanel.setBorder(BorderFactory.createTitledBorder("New Message"));
 		GridBagConstraints addConstraints=new GridBagConstraints();
 		addConstraints.gridx=0;
 		addConstraints.gridy=0;
-		addPanel.add(from=new JLabel("From:"),addConstraints);
+		addPanel.add(from=new JLabel("From:         "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=0;
 		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=1;
-		addPanel.add(to=new JLabel("To:  "),addConstraints);
+		addPanel.add(to=new JLabel("To:          "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=1;
 		addPanel.add(new JLabel("All Members"),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=2;
-		addPanel.add(content=new JLabel("Content:"),addConstraints);
+		addPanel.add(content=new JLabel("Content:        "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=2;
-		addPanel.add(publicContentText=new JTextArea(4,20),addConstraints);
+		addPanel.add(new JScrollPane(publicContentText=new JTextArea(10,30)),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
 		addPanel.add(submitPublic=new JButton("Send"),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=4;
+		addConstraints.gridwidth=2;
+		addPanel.add(sendSuccessLabel,addConstraints);
+		sendSuccessLabel.setVisible(false);
 		addPanel.validate();
 		
 		publicNotePanel.add(addPanel,BorderLayout.CENTER);
@@ -199,12 +208,14 @@ public class Notifications extends JPanel {
 				publicNote.content=publicContentText.getText();
 				publicNote.senderId=login.currentMember.MemberId;
 				sendPublicNotification(publicNote);
+				sendSuccessLabel.setVisible(true);
 			}
 		});
 		
 		back2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
+				sendSuccessLabel.setVisible(false);
 			}
 		});
 	}
@@ -215,29 +226,35 @@ public class Notifications extends JPanel {
 		
 		JPanel addPanel=new JPanel();
 		addPanel.setLayout(new GridBagLayout());
+		addPanel.setBorder(BorderFactory.createTitledBorder("New Message"));
 		GridBagConstraints addConstraints=new GridBagConstraints();
 		addConstraints.gridx=0;
 		addConstraints.gridy=0;
-		addPanel.add(from=new JLabel("From:"),addConstraints);
+		addPanel.add(from=new JLabel("From:         "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=0;
 		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=1;
-		addPanel.add(to=new JLabel("To:  "),addConstraints);
+		addPanel.add(to=new JLabel("To:          "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=1;
 		addPanel.add(toPersonChoice=new JComboBox(),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=2;
-		addPanel.add(content=new JLabel("Content:"),addConstraints);
+		addPanel.add(content=new JLabel("Content:          "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=2;
-		addPanel.add(privateContentText=new JTextArea(4,20),addConstraints);
+		addPanel.add(new JScrollPane(privateContentText=new JTextArea(10,30)),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
 		addPanel.add(submitPrivate=new JButton("Send"),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=4;
+		addConstraints.gridwidth=2;
+		addPanel.add(sendSuccessLabel,addConstraints);
+		sendSuccessLabel.setVisible(false);
 		addPanel.validate();
 		
 		privateNotePanel.add(addPanel,BorderLayout.CENTER);
@@ -262,12 +279,14 @@ public class Notifications extends JPanel {
 				}
 				Note privateNote=makePrivateNote(privateContentText.getText(),ids);
 				sendPrivateNotification(privateNote);
+				sendSuccessLabel.setVisible(true);
 			}
 		});
 		
 		back2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"notifications");
+				sendSuccessLabel.setVisible(false);
 			}
 		});
 	}
