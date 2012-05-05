@@ -9,7 +9,6 @@ public class MainFrame {
 	JFrame frame;
 	JPanel mainPanel;
 	CardLayout lay;
-	
 	private static MainFrame singleton;
 	
 	public static MainFrame getSingleton(){
@@ -21,13 +20,15 @@ public class MainFrame {
 	    mainPanel=new JPanel();
 		lay=new CardLayout();
 		mainPanel.setLayout(lay);
-		
+	
 		
 		mainPanel.add(login.getSingleton(),"login");
 		mainPanel.add(mainPage.getSingleton(),"mainPage");
 		mainPanel.add(MemberManagement.getSingleton(),"membermanagement");
 		mainPanel.add(Notifications.getSingleton(),"notifications");
 		mainPanel.add(Calendar.getSingleton(),"calendar");
+		
+		mainPanel.add(CalendarProgram.getSingleton(),"Calendar");
 		
 		lay.show(mainPanel,"login");
 		

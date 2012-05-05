@@ -406,6 +406,10 @@ public class MemberManagement extends JPanel{
 										
 										
 										ValidMessage.setVisible(true);
+										if(id!=null){
+											addrm_above.remove(id);
+											addrm_above.remove(tick);
+										}
 										id=new JLabel("<html><b>Your ID is "+val+"</b></html>");
 										tick=new JLabel(new ImageIcon("Finished-icon.png"));
 										constraints.gridx=0;

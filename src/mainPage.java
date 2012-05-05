@@ -77,7 +77,7 @@ public class mainPage extends JPanel{
 		});
 		calendarButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"calendar");
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"Calendar");
 			}
 		});
 		
