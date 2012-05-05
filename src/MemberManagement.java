@@ -389,7 +389,7 @@ public class MemberManagement extends JPanel{
 										pos="Member";
 									}
 									
-									String testQuery="Insert into members values(null"+",'"+FirstText.getText()+"','"+LastText.getText()+"','"+joinText.getText()+"','"+pos+"','"+(FirstText.getText()).charAt(0)+(LastText.getText()).charAt(0)+"','"+addressText.getText()+"','"+auth+"');";
+									String testQuery="Insert into members values(null"+",'"+FirstText.getText()+"','"+LastText.getText()+"','"+joinText.getText()+"','"+pos+"',LOWER('"+(FirstText.getText()).charAt(0)+(LastText.getText()).charAt(0)+"'),'"+addressText.getText()+"','"+auth+"');";
 									int r=test.update(testQuery);
 									if(r>0){
 										

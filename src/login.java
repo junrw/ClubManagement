@@ -106,7 +106,7 @@ login(){
 					}
 				}
 				catch(SQLException e){
-					e.printStackTrace();
+					incorrect_input.setVisible(true);
 				}
 				
 				
