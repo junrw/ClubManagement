@@ -88,8 +88,13 @@ public class Notifications extends JPanel {
 		
 		newPublicNote.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				MainFrame.getSingleton().mainPanel.add(publicNotePanel,"publicNotification");
-				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"publicNotification");
+				if(login.currentMember.Authority==4){
+					MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"ERROR");
+				}
+				else{
+					MainFrame.getSingleton().mainPanel.add(publicNotePanel,"publicNotification");
+					MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"publicNotification");
+				}
 			}
 		});
 		

@@ -90,7 +90,7 @@ login(){
 						currentMember.LastName=memberDetails.getString("LastName");
 						currentMember.Address=memberDetails.getString("Address");
 						currentMember.Position=memberDetails.getString("Position");
-						currentMember.Authority=memberDetails.getString("Authority");
+						currentMember.Authority=memberDetails.getInt("Authority");
 						currentMember.JoinDate=memberDetails.getString("JoinDate");
 						mainPage.getSingleton().displayMemberInfo();
 						

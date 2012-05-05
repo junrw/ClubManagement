@@ -7,7 +7,7 @@ public class Member {
 	public String JoinDate;
 	public String Position;
 	public String Address;
-	public String Authority;
+	public int Authority;
 	public int MemberId;
 	
 	public void updateMember(ResultSet memberDetails){
@@ -17,7 +17,7 @@ public class Member {
 			LastName=memberDetails.getString("LastName");
 			Address=memberDetails.getString("Address");
 			Position=memberDetails.getString("Position");
-			Authority=memberDetails.getString("Authority");
+			Authority=memberDetails.getInt("Authority");
 			JoinDate=memberDetails.getString("JoinDate");
 		}
 		catch(SQLException e){
