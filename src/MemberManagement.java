@@ -166,7 +166,11 @@ public class MemberManagement extends JPanel{
 		//Filter Box and Label for name Filtering
 		main_Table_below.add(filterButton=new JButton("Filter Name: "));
 		main_Table_below.add(filterText=new TextField(20));
-				
+		
+		values=new JLabel("");
+		main_Table_below.add(values);
+	
+		
 	    filterText.addTextListener(new TextListener(){
 			public void textValueChanged(TextEvent te){
 				filter=filterText.getText();
@@ -177,20 +181,16 @@ public class MemberManagement extends JPanel{
 		//for List Selection adding listener 
 	    table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	    	public void valueChanged(ListSelectionEvent e){
-	    		if(values!=null){
-	    			values.setVisible(false);
-	    			main_Table_below.remove(values);
-	    		}
 	    		
+	 
 	    		int [] list=table.getSelectedRows();
 	    		String lists="";
 	    		for(int x:list){
 	    			lists=lists+" "+table.getValueAt(x,0);
 	    		}
 	    		
-	    		values=new JLabel("The selected member ids are :"+lists);
-	    		values.setVisible(true);
-	    		main_Table_below.add(values);
+	    		
+	    		values.setText("The selected member ids are :"+lists);
 	    		main_Table_below.validate();
 	    	}
 	    });
@@ -232,6 +232,21 @@ public class MemberManagement extends JPanel{
 						
 						mainTablePanel.remove(tablepane);
 						table=new JTable(display1,colHeads1);
+						table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+						    	public void valueChanged(ListSelectionEvent e){
+						    		
+						 
+						    		int [] list=table.getSelectedRows();
+						    		String lists="";
+						    		for(int x:list){
+						    			lists=lists+" "+table.getValueAt(x,0);
+						    		}
+						    		
+						    		
+						    		values.setText("The selected member ids are :"+lists);
+						    		main_Table_below.validate();
+						    	}
+						    });
 						tablepane=new JScrollPane(table,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 						mainTablePanel.add(tablepane,BorderLayout.NORTH);
 						mainTablePanel.validate();
@@ -413,11 +428,8 @@ public class MemberManagement extends JPanel{
 			
 	    displaylist.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				if(values!=null){
-	    			values.setVisible(false);
-	    			main_Table_below.remove(values);
-	    		}
-	    		
+				values.setText("");
+				main_Table_below.validate();
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"tablepane");
 			}
 		});
