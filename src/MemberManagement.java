@@ -119,9 +119,14 @@ public class MemberManagement extends JPanel{
 				
 				filterButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent ae){
-						delMessage.setVisible(false);
-						baddelMessage.setVisible(false);
-						MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"delete");
+						if(login.currentMember.Authority>2){
+							MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"ERROR");
+						}
+						else{
+							delMessage.setVisible(false);
+							baddelMessage.setVisible(false);
+							MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"delete");
+						}
 					}
 					
 				});	    
@@ -198,7 +203,6 @@ public class MemberManagement extends JPanel{
 	    //using tableModel(abstract class) which controls the data in a table to fire data changes 
 	    tableModel =table.getModel();
 		tableModel.addTableModelListener(new TableModelListener(){
-			
 			public void tableChanged(TableModelEvent a){
 				
 					int i=0;
@@ -462,12 +466,17 @@ public class MemberManagement extends JPanel{
 		
 		addrmButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				positionText.setVisible(false);
-				if(id!=null||tick!=null){
-				id.setVisible(false);
-				tick.setVisible(false);
+				if(login.currentMember.Authority>3){
+					MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"ERROR");
 				}
+				else{
+					positionText.setVisible(false);
+					if(id!=null||tick!=null){
+						id.setVisible(false);
+						tick.setVisible(false);
+					}
 				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"add");
+				}
 			}
 			
 		});
