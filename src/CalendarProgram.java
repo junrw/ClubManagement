@@ -12,16 +12,17 @@ import java.awt.event.*;
 import java.util.*;
 
 public class CalendarProgram extends JPanel{
-	static JLabel lblMonth, lblYear;
-	static JButton btnPrev, btnNext;
-	static JTable tblCalendar;
-	static JComboBox cmbYear;
+	
+	JLabel lblMonth, lblYear;
+	JButton btnPrev, btnNext,backButton;
+	JTable tblCalendar;
+	JComboBox cmbYear;
 	//static JFrame frmMain;
-	static Container pane;
-	static DefaultTableModel mtblCalendar; //Table model
-	static JScrollPane stblCalendar; //The scrollpane
-	static JPanel pnlCalendar;
-	static int realYear, realMonth, realDay, currentYear, currentMonth;
+	Container pane;
+	DefaultTableModel mtblCalendar; //Table model
+	JScrollPane stblCalendar; //The scrollpane
+	JPanel pnlCalendar,abovePanel,lowerPanel,newPanel,holderPanel;
+	int realYear, realMonth, realDay, currentYear, currentMonth;
 
 	 private final static CalendarProgram singleton=new CalendarProgram();
 	 
@@ -29,6 +30,7 @@ public class CalendarProgram extends JPanel{
 		 return singleton;
 	 }
 	CalendarProgram(){
+		
 		//Look and feel
 		/*try {UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");}
 		catch (ClassNotFoundException e) {}
@@ -36,6 +38,7 @@ public class CalendarProgram extends JPanel{
 		catch (IllegalAccessException e) {}
 		catch (UnsupportedLookAndFeelException e) {}
 		 */
+		
 		//Prepare frame
 		/*frmMain = new JFrame ("Gestionnaire de clients"); //Create frame
 		frmMain.setSize(330, 375); //Set size to 400x400 pixels
@@ -43,9 +46,21 @@ public class CalendarProgram extends JPanel{
 		pane.setLayout(null); //Apply null layout
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Close when X is clicked
 		 */
+		
 		//Create controls
 		
-		add(pane=new JPanel());
+		holderPanel=new JPanel();
+		holderPanel.setLayout(new BorderLayout());
+		add(holderPanel);
+		holderPanel.add(backButton=new JButton("Back"),BorderLayout.SOUTH);
+		
+		backButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				MainFrame.getSingleton().lay.show(MainFrame.getSingleton().mainPanel,"mainPage");
+			}
+		});
+		
+		holderPanel.add(pane=new JPanel(),BorderLayout.CENTER);
 		pane.setLayout(new BorderLayout());
 		
 		lblMonth = new JLabel ("January");
@@ -53,7 +68,7 @@ public class CalendarProgram extends JPanel{
 		cmbYear = new JComboBox();
 		btnPrev = new JButton ("<<");
 		btnNext = new JButton (">>");
-		mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
+		mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return true;}};
 		tblCalendar = new JTable(mtblCalendar);
 		stblCalendar = new JScrollPane(tblCalendar);
 		pnlCalendar = new JPanel();
@@ -67,25 +82,41 @@ public class CalendarProgram extends JPanel{
 		cmbYear.addActionListener(new cmbYear_Action());
 		
 		//Add controls to pane
-		
 		pane.add(pnlCalendar);
-		pnlCalendar.add(lblMonth);
-		pnlCalendar.add(lblYear);
-		pnlCalendar.add(cmbYear);
-	
-		pnlCalendar.add(btnPrev,BorderLayout.SOUTH);
-		pnlCalendar.add(btnNext,BorderLayout.SOUTH);
+		
+		pnlCalendar.setLayout(new BorderLayout());
+		abovePanel=new JPanel();
+		abovePanel.setLayout(new BorderLayout());
+		
+		abovePanel.add(lblMonth,BorderLayout.NORTH);
+		
+		newPanel=new JPanel();
+		newPanel.setLayout(new GridLayout(0,2));
+		newPanel.add(lblYear);
+		newPanel.add(cmbYear);
+		
+		abovePanel.add(newPanel,BorderLayout.SOUTH);
+		
+		lowerPanel=new JPanel();
+		lowerPanel.setLayout(new GridLayout(0,2));
+		lowerPanel.add(btnPrev);
+		lowerPanel.add(btnNext);
+		
+		pnlCalendar.add(abovePanel,BorderLayout.NORTH);
+		pnlCalendar.add(lowerPanel,BorderLayout.SOUTH);
+		
 		pnlCalendar.add(stblCalendar,BorderLayout.CENTER);
 		
 		//Set bounds
-		pnlCalendar.setBounds(0, 0, 320, 335);
+		
+		/*pnlCalendar.setBounds(0, 0, 320, 235);
 		lblMonth.setBounds(160-lblMonth.getPreferredSize().width/2, 25, 100, 25);
 		lblYear.setBounds(10, 305, 80, 20);
 		cmbYear.setBounds(230, 305, 80, 20);
 		btnPrev.setBounds(10, 25, 50, 25);
 		btnNext.setBounds(260, 25, 50, 25);
-		stblCalendar.setBounds(10, 50, 300, 250);
-		
+		stblCalendar.setBounds(10, 50, 300, 150);
+		*/
 		//Make frame visible
 		//frmMain.setResizable(false);
 		//frmMain.setVisible(true);
@@ -111,10 +142,11 @@ public class CalendarProgram extends JPanel{
 		tblCalendar.getTableHeader().setReorderingAllowed(false);
 
 		//Single cell selection
+		
 		tblCalendar.setColumnSelectionAllowed(true);
 		tblCalendar.setRowSelectionAllowed(true);
 		tblCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+		
 		//Set row/column count
 		tblCalendar.setRowHeight(38);
 		mtblCalendar.setColumnCount(7);
@@ -161,9 +193,12 @@ public class CalendarProgram extends JPanel{
 			int column  =  (i+som-2)%7;
 			mtblCalendar.setValueAt(i, row, column);
 		}
-
+		
+	
 		//Apply renderers
-		tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer());
+		//tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer());
+		
+		
 	}
 
 	class tblCalendarRenderer extends DefaultTableCellRenderer{
@@ -180,6 +215,7 @@ public class CalendarProgram extends JPanel{
 					setBackground(new Color(220, 220, 255));
 				}
 			}
+			
 			setBorder(null);
 			setForeground(Color.black);
 			return this;  

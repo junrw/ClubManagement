@@ -34,7 +34,7 @@ public class MainFrame {
 		
 		frame.add(mainPanel);
 		
-		frame.setMinimumSize(new Dimension(800,550));
+		frame.setMinimumSize(new Dimension(800,620));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
