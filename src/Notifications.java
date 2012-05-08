@@ -32,9 +32,6 @@ public class Notifications extends JPanel {
 		
 		
 		setLayout(new BorderLayout());
-		
-		
-		
 		centerLeft=new JPanel();
 		
 		centerLeft.setLayout(new GridBagLayout());
@@ -45,13 +42,13 @@ public class Notifications extends JPanel {
 		
 		centerLeftConstraints.gridx=0;
 		centerLeftConstraints.gridy=0;
-		centerLeftConstraints.gridheight=2;
+		
+		centerLeftConstraints.anchor=GridBagConstraints.FIRST_LINE_START;
 		centerLeftTop.add(new JLabel(new ImageIcon("Mail-icon.png")),centerLeftConstraints);
 		
 		centerLeftConstraints.gridx=0;
-		centerLeftConstraints.gridy=2;
-		
-		centerLeftTop.add(details=new JLabel("Recent Notifications !"),centerLeftConstraints);
+		centerLeftConstraints.gridy=1;
+		centerLeftTop.add(details=new JLabel("Recent Notifications"),centerLeftConstraints);
 		
 		centerLeft.add(centerLeftTop,constraints);
 		
@@ -134,6 +131,7 @@ public class Notifications extends JPanel {
 			currentNotificationResult=Konnection.getSingleton().query(currentNotificationsQuery);
 			while(currentNotificationResult.next()){
 				JPanel tempNote= new JPanel();
+				
 				tempNote.setLayout(new GridLayout(0,1));
 				String memberFrom=currentNotificationResult.getString("MemberFrom");
 				String message=currentNotificationResult.getString("Content");
@@ -148,7 +146,9 @@ public class Notifications extends JPanel {
 			}
 			
 			allNotificationsScroll=new JScrollPane((allNotifications));
+			allNotificationsScroll.setBorder(null);
 			notificationArea.add(allNotificationsScroll);
+			allNotifications.setBorder(BorderFactory.createTitledBorder("Notification Feed"));
 			notificationArea.validate();
 			
 		}
@@ -160,29 +160,37 @@ public class Notifications extends JPanel {
 	public void makePublicNoteGUI(){
 		publicNotePanel=new JPanel();
 		publicNotePanel.setLayout(new BorderLayout());
-
+		
 		JPanel addPanel=new JPanel();
+		JScrollPane m=new JScrollPane(publicContentText=new JTextArea(10,30));
+		JPanel q=new JPanel();
+		q.setBorder(BorderFactory.createTitledBorder("Details"));
+		q.setLayout(new GridBagLayout());
 		addPanel.setLayout(new GridBagLayout());
-		addPanel.setBorder(BorderFactory.createTitledBorder("New Message"));
+		m.setBorder(BorderFactory.createTitledBorder("New Message"));
 		GridBagConstraints addConstraints=new GridBagConstraints();
 		addConstraints.gridx=0;
 		addConstraints.gridy=0;
-		addPanel.add(from=new JLabel("From:         "),addConstraints);
+		q.add(from=new JLabel("<html><b>From:</b></html>         "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=0;
-		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
+		q.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=1;
-		addPanel.add(to=new JLabel("To:          "),addConstraints);
+		q.add(to=new JLabel("<html><b>To:</b></html>          "),addConstraints);
 		addConstraints.gridx=1;
 		addConstraints.gridy=1;
-		addPanel.add(new JLabel("All Members"),addConstraints);
+		q.add(new JLabel("All Members"),addConstraints);
 		addConstraints.gridx=0;
-		addConstraints.gridy=2;
-		addPanel.add(content=new JLabel("Content:        "),addConstraints);
-		addConstraints.gridx=1;
-		addConstraints.gridy=2;
-		addPanel.add(new JScrollPane(publicContentText=new JTextArea(10,30)),addConstraints);
+		addConstraints.gridy=0;
+		addConstraints.gridwidth=2;
+		addPanel.add(q,addConstraints);
+		//addPanel.add(content=new JLabel("Content:        "),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=1;
+		addConstraints.gridwidth=1;
+		addConstraints.anchor=GridBagConstraints.CENTER;
+		addPanel.add(m,addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;
@@ -222,30 +230,44 @@ public class Notifications extends JPanel {
 	
 	public void makePrivateNoteGUI(){
 		privateNotePanel=new JPanel();
+		privateContentText=new JTextArea(10,30);
 		privateNotePanel.setLayout(new BorderLayout());
 		
+		JScrollPane n=new JScrollPane(privateContentText);
+		n.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		privateContentText.setLineWrap(true);
 		JPanel addPanel=new JPanel();
+		JPanel pro=new JPanel();
+		
+
+		
+		pro.setLayout(new GridBagLayout());
+		pro.setBorder(BorderFactory.createTitledBorder("Details"));
+		
 		addPanel.setLayout(new GridBagLayout());
-		addPanel.setBorder(BorderFactory.createTitledBorder("New Message"));
+		n.setBorder(BorderFactory.createTitledBorder("New Message"));
 		GridBagConstraints addConstraints=new GridBagConstraints();
 		addConstraints.gridx=0;
 		addConstraints.gridy=0;
-		addPanel.add(from=new JLabel("From:         "),addConstraints);
-		addConstraints.gridx=1;
+		addConstraints.gridwidth=2;
+		pro.add(from=new JLabel("<html><b>From:</b></html>           "),addConstraints);
+		addConstraints.gridx=3;
 		addConstraints.gridy=0;
-		addPanel.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
-		addConstraints.gridx=0;
-		addConstraints.gridy=1;
-		addPanel.add(to=new JLabel("To:          "),addConstraints);
-		addConstraints.gridx=1;
-		addConstraints.gridy=1;
-		addPanel.add(toPersonChoice=new JComboBox(),addConstraints);
+		pro.add(fromPerson=new JLabel(login.currentMember.FirstName),addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=2;
-		addPanel.add(content=new JLabel("Content:          "),addConstraints);
-		addConstraints.gridx=1;
+		pro.add(to=new JLabel("<html><b>To:</b></html>                "),addConstraints);
+		addConstraints.gridx=3;
 		addConstraints.gridy=2;
-		addPanel.add(new JScrollPane(privateContentText=new JTextArea(10,30)),addConstraints);
+		pro.add(toPersonChoice=new JComboBox(),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=0;
+		addConstraints.gridwidth=1;
+		addPanel.add(pro,addConstraints);
+		//addPanel.add(content=new JLabel("Content:          "),addConstraints);
+		addConstraints.gridx=0;
+		addConstraints.gridy=1;
+		addPanel.add(n,addConstraints);
 		addConstraints.gridx=0;
 		addConstraints.gridy=3;
 		addConstraints.gridwidth=2;

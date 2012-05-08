@@ -14,6 +14,10 @@ public class Calendar extends JPanel{
 		return singleton;
 		
 	}
+	
+	
+			
+	
 	Calendar(){
 		
 		setLayout(new BorderLayout());

@@ -5,7 +5,6 @@ import java.awt.*;
 
 
 public class MainFrame {
-	
 	JFrame frame;
 	JPanel mainPanel;
 	CardLayout lay;
@@ -26,7 +25,7 @@ public class MainFrame {
 		mainPanel.add(mainPage.getSingleton(),"mainPage");
 		mainPanel.add(MemberManagement.getSingleton(),"membermanagement");
 		mainPanel.add(Notifications.getSingleton(),"notifications");
-		mainPanel.add(Calendar.getSingleton(),"calendar");
+		//mainPanel.add(Calendar.getSingleton(),"calendar");
 		
 		mainPanel.add(CalendarProgram.getSingleton(),"Calendar");
 		
@@ -40,6 +39,7 @@ public class MainFrame {
 	}
 	
 	public static void main(String args[]){
+		
 		try{
 			SwingUtilities.invokeLater(new Runnable(){
 				public void run(){
@@ -47,7 +47,6 @@ public class MainFrame {
 						UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 						SwingUtilities.updateComponentTreeUI(new MainFrame().frame);
 						}catch(Exception e){System.out.println(e);}
-					
 				}
 			});
 		}catch(Exception e){}
