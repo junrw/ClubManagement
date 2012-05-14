@@ -3,20 +3,20 @@ Club Management Software
 The software covers the basic book keeping that goes behind managing a club.
 
 Login screen:
-[![Screenshot][ss1]]
+![Screenshot][ss1]
 
 Main page:
-[![Screenshot][ss2]]
+![Screenshot][ss2]
 
 • Member Management facility 
 -----------------------------
-[![Screenshot][ss3]] 
+![Screenshot][ss3]
 
 This would let you add members through forms
-[![Screenshot][ss4]] 
+![Screenshot][ss4]
 
 , delete members
-[![Screenshot][ss5]]
+![Screenshot][ss5]
 
 and also view member lists with or without filters.
 [![Screenshot][ss6]][ssbig6]
@@ -25,7 +25,7 @@ and also view member lists with or without filters.
 • Notifications
 ----------------
 This section is used for better communication and coordination between members. All members can be notified about events through the notification app. 
-[![Screenshot][ss7]] 
+![Screenshot][ss7]
 
 There are two types of notifications:
 
@@ -46,7 +46,7 @@ This type is meant to go from one member to another.
 -----------
 The calendar lets members see which events are happening on what date and store information about each event. The Calendar app is helpful for members to plan out accordingly on which event they would wish to work on.
 
-[![Screenshot][ss10]] 
+![Screenshot][ss10] 
 
 
 <sub>*: The calendar section is a work in progress.</sub>
