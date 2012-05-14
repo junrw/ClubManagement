@@ -57,18 +57,18 @@ etc.
 The database was made on MySQL and a Java ODBC connection library was used to access it.
 
 
-[ss1]: https://www.dropbox.com/s/5lcgz5nlugrrabx/Login.PNG  "Logging in with user id 1"
-[ss2]: https://www.dropbox.com/s/sf03z24fk2cngx6/mainpage.PNG "Main page after login"
-[ss3]: https://www.dropbox.com/sh/4b5xduv87i82rf9/w-pTihV3Vy/membermanagement.PNG "Member management main screen"
-[ss4]: https://www.dropbox.com/s/szva58r4c7ecl41/newmember.PNG "Add new member"
-[ss5]: https://www.dropbox.com/s/7g7gprerze79pw1/removemember.PNG "Delete member by ID"
-[ss6]: https://www.dropbox.com/s/vhdcd83u9cnbtf9/ViewMembers.gif "Click for full size"
-[ssbig6]: https://www.dropbox.com/s/iyn1sv0yvuxxhzk/displaymember.PNG
-[ss7]: https://www.dropbox.com/s/xk3r7f6u2r794ip/notifications.PNG "Main notifications area"
-[ss8]: https://www.dropbox.com/s/rsj8ri99vo7wvvv/Publicnotifications.gif "Notificationt to every member"
-[ssbig8]: https://www.dropbox.com/s/quzjvkcdcreququ/publicnotifications2.PNG
-[ss9]: https://www.dropbox.com/s/5368u5cato72s0t/privatenotifications.gif "Member management main screen"
-[ssbig9]: https://www.dropbox.com/s/7m9tlfo0j73r7jk/privatenotifications2.PNG
+[ss1]: https://dl.dropbox.com/s/5lcgz5nlugrrabx/Login.PNG  "Logging in with user id 1"
+[ss2]: https://dl.dropbox.com/s/sf03z24fk2cngx6/mainpage.PNG "Main page after login"
+[ss3]: https://dl.dropbox.com/sh/4b5xduv87i82rf9/w-pTihV3Vy/membermanagement.PNG "Member management main screen"
+[ss4]: https://dl.dropbox.com/s/szva58r4c7ecl41/newmember.PNG "Add new member"
+[ss5]: https://dl.dropbox.com/s/7g7gprerze79pw1/removemember.PNG "Delete member by ID"
+[ss6]: https://dl.dropbox.com/s/vhdcd83u9cnbtf9/ViewMembers.gif "Click for full size"
+[ssbig6]: https://dl.dropbox.com/s/iyn1sv0yvuxxhzk/displaymember.PNG
+[ss7]: https://dl.dropbox.com/s/xk3r7f6u2r794ip/notifications.PNG "Main notifications area"
+[ss8]: https://dl.dropbox.com/s/rsj8ri99vo7wvvv/Publicnotifications.gif "Notificationt to every member"
+[ssbig8]: https://dl.dropbox.com/s/quzjvkcdcreququ/publicnotifications2.PNG
+[ss9]: https://dl.dropbox.com/s/5368u5cato72s0t/privatenotifications.gif "Member management main screen"
+[ssbig9]: https://dl.dropbox.com/s/7m9tlfo0j73r7jk/privatenotifications2.PNG
 [ss10]: https://dl.dropbox.com/s/hqykugrnvhks1wt/Calendar.PNG "Member management main screen"
 
 
